@@ -21,9 +21,9 @@ from app import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     re_path(r'^api/topics/$', views.topics),
-    re_path(r'^api/topics/([0-9])$', views.topic_detail),
+    re_path(r'^api/topics/([0-9]*)$', views.topic_detail),
     re_path(r'^api/posts/$', views.posts),
-    re_path(r'^api/posts/([0-9])$', views.post_detail),
+    re_path(r'^api/posts/([0-9]*)$', views.post_detail),
     re_path(r'^api/comments/$', views.comments),
     re_path(r'^api/comments/[0-9]$', views.comment_detail),
 ]

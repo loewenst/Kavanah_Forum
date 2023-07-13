@@ -4,17 +4,7 @@ import axios from 'axios'
 
 const TopicPage = () => {
   let { topicId } = useParams()
-  let emotionsArray = [
-    'Gratitude',
-    'Gratitude',
-    'Gratitude',
-    'Humility',
-    'Humility',
-    'Awe',
-    'Awe',
-    'Awe',
-    'Awe'
-  ]
+  let emotionsArray = []
   const [posts, setPosts] = useState([])
   const [topicName, setTopicName] = useState('')
   const [topThreeEmotions, setTopThreeEmotions] = useState([])
@@ -24,8 +14,6 @@ const TopicPage = () => {
     const response = await axios.get('http://localhost:8000/api/topics/2')
     console.log(response.data)
     setPosts(response.data.posts)
-
-    //   console.log(response.data.posts)
     setTopicName(response.data.title)
   }
   //
@@ -48,8 +36,6 @@ const TopicPage = () => {
     }
     emotionsArray = emotionCounter(emotionsArray)
     console.log(emotionsArray)
-
-    //need a way to count the instances of an emotion
     if (emotionsArray.length > 3) {
       setTopThreeEmotions(
         `${emotionsArray[0]}, ${emotionsArray[1]}, ${emotionsArray[2]}`
