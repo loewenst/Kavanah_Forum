@@ -1,3 +1,4 @@
+import 'bootstrap/dist/css/bootstrap.min.css'
 import PostForms from '../components/PostForm'
 
 const Home = () => {
