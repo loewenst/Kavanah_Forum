@@ -1,0 +1,30 @@
+header {
+  background-color: #212121;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  height: 3em;
+}
+
+header nav a {
+  margin: 0 1em;
+}
+
+#topicCard {
+  background-color: #279689;
+  transition: all 0.2s;
+  margin: 0 auto;
+  text-align: center;
+}
+
+#topicCard > h1 {
+  padding: 10px;
+}
+
+.card {
+  border-radius: 4px;
+  background-color: #2d027f;
+  transition: all 0.2s;
+  margin: 0 auto;
+  text-align: center;
+}
