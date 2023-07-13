@@ -19,7 +19,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="about" element={<About />} />
           <Route path="browse" element={<Topics />} />
-          <Route path="t" element={<TopicPage />} /> {/*later t/:topicid */}
+          <Route path="t/:topicId" element={<TopicPage />} />
           <Route path="t/:topicId/:postId" element={<PostPage />} />
         </Routes>
       </main>

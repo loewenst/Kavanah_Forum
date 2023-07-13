@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react'
+import { useParams } from 'react-router-dom'
+import axios from 'axios'
 
 const TopicPage = () => {
-  // let { topicId } = useParams()
+  let { topicId } = useParams()
   let emotionsArray = [
     'Gratitude',
     'Gratitude',
@@ -13,25 +15,24 @@ const TopicPage = () => {
     'Awe',
     'Awe'
   ]
-  // const [posts, setPosts] = useState([])
-  // const [topicName, setTopicName] = useState([])
+  const [posts, setPosts] = useState([])
+  const [topicName, setTopicName] = useState('')
   const [topThreeEmotions, setTopThreeEmotions] = useState([])
   const [otherEmotions, setOtherEmotions] = useState('')
 
-  // const getPostsByTopic = async () => {
-  //   const response = await axios.get(
-  //     ?BACKEND CALL?
-  //   )
-  //   setPosts(response.data.posts) IT MIGHT NOT BE CALLED THIS
-  //   console.log(response.data.posts)
-  //   setTopicName(response.data.name)
-  //   console.log(topicName)
-  // }
+  const getPostsByTopic = async () => {
+    const response = await axios.get('http://localhost:8000/api/topics/2')
+    console.log(response.data)
+    setPosts(response.data.posts)
+
+    //   console.log(response.data.posts)
+    setTopicName(response.data.title)
+  }
   //
   const getEmotions = () => {
-    // posts.forEach((post) => {
-    //   emotionsArray.push(post.primaryEmotion)
-    // })
+    posts.forEach((post) => {
+      emotionsArray.push(post.main_emotion)
+    })
     let emotionCounter = (emotionsArray) => {
       const emotionObj = {}
       for (let i = 0; i < emotionsArray.length; i++) {
@@ -62,22 +63,22 @@ const TopicPage = () => {
     getEmotions()
   }, [])
   //
-  // useEffect(() => {
-  //   getPostsByTopic()
-  // }, [topicId])
+  useEffect(() => {
+    getPostsByTopic()
+  }, [topicId])
   //
 
   return (
     <div>
       <div id="topicCard">
-        <h1>Asher Yatzar</h1>
+        <h1>{topicName}</h1>
         {/* later: {topicName} */}
         <br />
         <h4>
           Associated Emotions: {topThreeEmotions} {otherEmotions}
         </h4>
         <h4>Coming Soon: Text Link powered by Sefaria</h4>
-        <h4>X Posts</h4>
+        <h4>{posts.length} Posts</h4>
         <button>Add Post</button>
       </div>
       <div className="card">
