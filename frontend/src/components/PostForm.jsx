@@ -17,6 +17,11 @@
 //elaboration
 //
 const PostForms = () => {
+  // const initialState = {
+  //   pk: 0,
+  //   user: user
+  // }
+
   return (
     <form>
       <label htmlFor="topic">Topic:</label>
