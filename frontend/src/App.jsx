@@ -7,19 +7,62 @@ import About from './pages/About'
 import Topics from './pages/Topics'
 import TopicPage from './pages/TopicPage'
 import PostPage from './pages/PostPage'
+import axios from 'axios'
+import Navbar from './components/Navbar'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const backendId = `${import.meta.env.VITE_DJANGO_ID}`
+  const backendSecret = `${import.meta.env.VITE_DJANGO_SECRET}`
+
+  const [user, setUser] = useState(null)
+
+  const djangoLogin = async (token) => {
+    await axios
+      .post('http://localhost:8000/auth/convert-token', {
+        token: token,
+        backend: 'google-oauth2',
+        grant_type: 'convert_token',
+        client_id: backendId,
+        client_secret: backendSecret
+      })
+      .then((res) => {
+        localStorage.setItem('access_token', res.data.access_token)
+        localStorage.setItem('refresh_token', res.data.refresh_token)
+        console.log('Hit Django!')
+      })
+  }
+
+  const onSuccess = (res) => {
+    console.log('LOGIN SUCCESSFUL!')
+    djangoLogin(res.accessToken)
+    setUser(res.profileObj)
+    console.log(res.profileObj)
+  }
+
+  const onLogoutSuccess = () => {
+    console.log('LOGOUT SUCCESSFUL!')
+    setUser(null)
+  }
 
   return (
     <div>
-      <Header />
+      <Header
+        user={user}
+        onSuccess={onSuccess}
+        onLogoutSuccess={onLogoutSuccess}
+      />
+
       <main>
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route
+            path="/"
+            element={
+              <Home onSuccess={onSuccess} onLogoutSuccess={onLogoutSuccess} />
+            }
+          />
           <Route path="about" element={<About />} />
           <Route path="browse" element={<Topics />} />
-          <Route path="t/:topicId" element={<TopicPage />} />
+          <Route path="t/:topicId" element={<TopicPage user={user} />} />
           <Route path="t/:topicId/:postId" element={<PostPage />} />
         </Routes>
       </main>

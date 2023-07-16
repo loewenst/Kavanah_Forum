@@ -1,11 +1,7 @@
-import 'bootstrap/dist/css/bootstrap.min.css'
-import PostForms from '../components/PostForm'
-
-const Home = () => {
+const Home = (props) => {
   return (
     <div>
       <h1>This is the home page. More info coming soon.</h1>
-      <PostForms />
     </div>
   )
 }

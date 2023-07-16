@@ -1,3 +1,6 @@
+import axios from 'axios'
+import { useEffect } from 'react'
+
 // need imports
 //post object needs:
 
@@ -16,10 +19,22 @@
 //one liner
 //elaboration
 //
-const PostForms = () => {
+const PostForm = (props) => {
+  const getUserId = async () => {
+    const response = await axios.get('http://localhost:8000/api/users')
+    console.log(response.data)
+    console.log(props.user)
+    const id = response.data.find((obj) => obj.email === props.user)
+    return id
+  }
+
+  useEffect(() => {
+    getUserId()
+  }, [])
+
   // const initialState = {
   //   pk: 0,
-  //   user: user
+  //   user: userId
   // }
 
   return (
@@ -41,4 +56,4 @@ const PostForms = () => {
     </form>
   )
 }
-export default PostForms
+export default PostForm

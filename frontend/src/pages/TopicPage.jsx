@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import axios from 'axios'
+import PostForm from '../components/PostForm'
 
-const TopicPage = () => {
+const TopicPage = (props) => {
   let { topicId } = useParams()
   let emotionsArray = []
   const [posts, setPosts] = useState([])
@@ -47,7 +48,7 @@ const TopicPage = () => {
   }
   useEffect(() => {
     getEmotions()
-  }, [])
+  }, [topicId])
   //
   useEffect(() => {
     getPostsByTopic()
@@ -58,13 +59,12 @@ const TopicPage = () => {
     <div>
       <div id="topicCard">
         <h1>{topicName}</h1>
-        {/* later: {topicName} */}
         <br />
         <h4>
           Associated Emotions: {topThreeEmotions} {otherEmotions}
         </h4>
         <h4>Coming Soon: Text Link powered by Sefaria</h4>
-        <h4>{posts.length} Posts</h4>
+        <h4>{posts.length} Post(s)</h4>
         <button>Add Post</button>
       </div>
       <div className="card">
@@ -74,6 +74,7 @@ const TopicPage = () => {
         </h5>
         <h5>Helpful: | Grounded: | Comments: </h5>
       </div>
+      <PostForm user={props.user} />
     </div>
   )
 }

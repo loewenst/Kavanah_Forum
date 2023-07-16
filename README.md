@@ -18,3 +18,10 @@ This forum will be a place for people to share their intentions during prayer, s
 
 PostgresQL
 REACT
+
+## _**Credits**_
+
+https://blog.logrocket.com/using-react-django-create-app-tutorial/
+https://drf-social-oauth2.readthedocs.io/en/latest/
+https://www.youtube.com/watch?v=HtJKUQXmtok
+https://www.youtube.com/watch?v=wlcCvzOLL8w
