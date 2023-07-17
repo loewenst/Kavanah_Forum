@@ -4,19 +4,26 @@ import { Button, Card, CardHeader, CardBody, Collapse } from 'reactstrap'
 import axios from 'axios'
 import * as AiIcons from 'react-icons/ai'
 import SuperTopic from '../components/SuperTopic'
+import axiosInstance from '../components/AxiosInstance'
 
-const Topics = () => {
+const Topics = (props) => {
   //setting the topics from the backend
   const [topics, setTopics] = useState([])
+  const axiosBase = axiosInstance(localStorage.getItem('access_token'))
+
   const getTopics = async () => {
-    const response = await axios.get('http://localhost:8000/api/topics')
+    const response = await axiosBase.get('topics/')
     console.log(response.data)
     setTopics(response.data)
   }
 
   useEffect(() => {
-    getTopics()
-  }, [])
+    if (props.user) {
+      getTopics()
+    } else {
+      setTopics([])
+    }
+  }, [props.user])
 
   const getSuperTopicArray = (topic) => {
     console.log(topics)

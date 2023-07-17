@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
-import axios from 'axios'
+import axiosInstance from '../components/AxiosInstance'
 import PostForm from '../components/PostForm'
 
 const TopicPage = (props) => {
@@ -12,7 +12,7 @@ const TopicPage = (props) => {
   const [otherEmotions, setOtherEmotions] = useState('')
 
   const getPostsByTopic = async () => {
-    const response = await axios.get('http://localhost:8000/api/topics/2')
+    const response = await axiosInstance.get(`topics/${topicId}`)
     console.log(response.data)
     setPosts(response.data.posts)
     setTopicName(response.data.title)
@@ -57,6 +57,18 @@ const TopicPage = (props) => {
 
   return (
     <div>
+      <div
+        style={{
+          backgroundImage: 'url("https://i.imgur.com/7hJ45j1.jpg")',
+          width: '70%',
+          height: '40vh',
+          boxShadow: '5px 5px 5px lightgrey',
+          margin: '0 auto'
+        }}
+      >
+        Boo
+      </div>
+      {/* 70% card or square with shadow,  */}
       <div id="topicCard">
         <h1>{topicName}</h1>
         <br />

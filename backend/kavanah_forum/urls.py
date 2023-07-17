@@ -30,5 +30,6 @@ urlpatterns = [
     re_path(r'^api/posts/([0-9]*)$', views.post_detail),
     re_path(r'^api/comments/$', views.comments),
     re_path(r'^api/comments/[0-9]*$', views.comment_detail),
-    re_path(r'^api/users/$', views.users)
+    re_path(r'^api/users/$', views.users),
+    re_path(r'^api/user_info/$', views.user_info)
 ]

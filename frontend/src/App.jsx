@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Route, Routes } from 'react-router-dom'
 import './App.css'
 import Header from './components/Header'
@@ -9,6 +9,7 @@ import TopicPage from './pages/TopicPage'
 import PostPage from './pages/PostPage'
 import axios from 'axios'
 import { useMediaQuery } from 'react-responsive'
+import axiosInstance from './components/AxiosInstance'
 
 function App() {
   //backend authentication and user setting
@@ -16,6 +17,23 @@ function App() {
   const backendSecret = `${import.meta.env.VITE_DJANGO_SECRET}`
 
   const [user, setUser] = useState(null)
+
+  const getUserData = async (token) => {
+    // const axiosInstance = axios.create({
+    //   baseURL: 'http://localhost:8000/api/',
+    //   timeout: 5000,
+    //   headers: {
+    //     Authorization: 'Bearer ' + token,
+    //     'Content-Type': 'application/json',
+    //     accept: 'application/json'
+    //   }
+    // })
+
+    const axiosBase = axiosInstance(token)
+    let response = await axiosBase.get('user_info/')
+    console.log(response)
+    setUser(response)
+  }
 
   const djangoLogin = async (token) => {
     await axios
@@ -30,22 +48,25 @@ function App() {
         localStorage.setItem('access_token', res.data.access_token)
         localStorage.setItem('refresh_token', res.data.refresh_token)
         console.log('Hit Django!')
+        getUserData(res.data.access_token)
       })
+    // .then(
   }
 
-  const onSuccess = (res) => {
+  const onSuccess = async (res) => {
     console.log('LOGIN SUCCESSFUL!')
-    djangoLogin(res.accessToken)
-    setUser(res.profileObj)
-    console.log(res.profileObj)
+    console.log(res)
+    await djangoLogin(res.accessToken)
   }
 
   const onLogoutSuccess = () => {
     console.log('LOGOUT SUCCESSFUL!')
+    localStorage.removeItem('access_token')
+    localStorage.removeItem('refresh_token')
     setUser(null)
   }
 
-  const isSmallScreen = useMediaQuery({ query: '(max-width: 1224px)' })
+  useEffect(() => {}, [user])
 
   return (
     <div>
@@ -64,7 +85,7 @@ function App() {
             }
           />
           <Route path="about" element={<About />} />
-          <Route path="browse" element={<Topics />} />
+          <Route path="browse" element={<Topics user={user} />} />
           <Route path="t/:topicId" element={<TopicPage user={user} />} />
           <Route path="t/:topicId/:postId" element={<PostPage />} />
         </Routes>

@@ -1,14 +1,4 @@
 
-#topicCard {
-  background-color: #279689;
-  transition: all 0.2s;
-  margin: 0 auto;
-  text-align: center;
-}
-
-#topicCard > h1 {
-  padding: 10px;
-}
 
 .card {
   border-radius: 4px;
@@ -16,6 +6,9 @@
   transition: all 0.2s;
   margin: 0 auto;
   text-align: center;
+
+  
+  ;
 }
 
 .sidebar {

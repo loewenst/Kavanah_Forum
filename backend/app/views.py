@@ -1,19 +1,21 @@
 from django.shortcuts import render
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
-from rest_framework import status
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework import status, permissions
 
 from .models import Topic, Post, Comment
 from .serializers import *
 
 # Create your views here.
 
-    # re_path(r'^api/topics/$', views.topics),
-    # re_path(r'^api/topics/([0-9])$', views.topics_detail),
-    # re_path(r'^api/posts/([0-9])$', views.post_detail),
-    # re_path(r'^api/comments/([0-9])$', views.comment_detail)
+@api_view(['GET'])
+def user_info(request):
+    data = request.user
+    serializer = UserSerializer(data, context={'request': request})
+    return Response(serializer.data)
 
 @api_view(['GET'])
+# @permission_classes([permissions.IsAuthenticated])
 def topics(request):
     if request.method == 'GET':
         data = Topic.objects.all()
