@@ -8,9 +8,10 @@ import Topics from './pages/Topics'
 import TopicPage from './pages/TopicPage'
 import PostPage from './pages/PostPage'
 import axios from 'axios'
-import Navbar from './components/Navbar'
+import { useMediaQuery } from 'react-responsive'
 
 function App() {
+  //backend authentication and user setting
   const backendId = `${import.meta.env.VITE_DJANGO_ID}`
   const backendSecret = `${import.meta.env.VITE_DJANGO_SECRET}`
 
@@ -43,6 +44,8 @@ function App() {
     console.log('LOGOUT SUCCESSFUL!')
     setUser(null)
   }
+
+  const isSmallScreen = useMediaQuery({ query: '(max-width: 1224px)' })
 
   return (
     <div>

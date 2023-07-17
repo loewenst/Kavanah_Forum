@@ -18,6 +18,10 @@ This forum will be a place for people to share their intentions during prayer, s
 
 PostgresQL
 REACT
+Django
+Django REST Framework
+Google OAuth2
+react-responsive
 
 ## _**Credits**_
 
@@ -25,3 +29,5 @@ https://blog.logrocket.com/using-react-django-create-app-tutorial/
 https://drf-social-oauth2.readthedocs.io/en/latest/
 https://www.youtube.com/watch?v=HtJKUQXmtok
 https://www.youtube.com/watch?v=wlcCvzOLL8w
+https://www.youtube.com/watch?v=mN3P_rv8ad4&t=1768s
+https://www.django-rest-framework.org/api-guide/relations/ (Just very helpful)

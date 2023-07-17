@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useEffect } from 'react'
+import { useMediaQuery } from 'react-responsive'
 import {
-  Collapse,
   Navbar,
   NavbarToggler,
   NavbarBrand,
@@ -14,12 +14,14 @@ import LogoutButton from './LogoutButton'
 import { gapi } from 'gapi-script'
 
 const Header = (props) => {
-  const [collapsed, setCollapsed] = useState(true)
+  // setting side navbar state
+  const [collapsed, setCollapsed] = useState('-100%')
+  const toggleNavbar = () => {
+    collapsed === '-100%' ? setCollapsed('0') : setCollapsed('-100%')
+  }
 
-  const toggleNavbar = () => setCollapsed(!collapsed)
-
+  //authentication
   const clientId = `${import.meta.env.VITE_GOOGLE_ID}`
-
   useEffect(() => {
     const start = () => {
       gapi.client.init({
@@ -30,44 +32,126 @@ const Header = (props) => {
     gapi.load('client:auth2', start)
   })
 
+  //responsive design
+  const isSmallScreen = useMediaQuery({ query: '(max-width: 550px)' })
+  const checkSizeTopBar = () => {
+    if (isSmallScreen) {
+      return 'none'
+    } else {
+      return 'block'
+    }
+  }
+  const checkSizeSideBar = () => {
+    if (isSmallScreen) {
+      return 'flex'
+    } else {
+      return 'none'
+    }
+  }
+
   return (
     <div>
-      <Navbar color="faded" light>
-        <NavbarToggler onClick={toggleNavbar} className="me-auto" />
-        <NavbarBrand href="/" className="me-auto">
-          reactstrap
-        </NavbarBrand>
-        {props.user ? (
-          <LogoutButton onLogoutSuccess={props.onLogoutSuccess} />
-        ) : (
-          <LoginButton onSuccess={props.onSuccess} />
-        )}
-      </Navbar>
-      <Collapse isOpen={!collapsed}>
-        <Nav
-          vertical
-          style={{
-            position: 'fixed',
-            background: 'white',
-            border: 'black solid .5px'
-          }}
-        >
+      <div
+        style={{
+          background: 'rgb(54, 53, 53)',
+          width: '250px',
+          height: '100vh',
+          display: 'flex',
+          paddingLeft: '20px',
+          paddingTop: '20px',
+          position: 'fixed',
+          top: '0',
+          left: `${collapsed}`,
+          transition: '.4s',
+          zIndex: '10'
+        }}
+      >
+        <Nav vertical>
           <NavItem>
-            <NavLink href="#">Link</NavLink>
-          </NavItem>
-          <NavItem>
-            <NavLink href="#">Link</NavLink>
-          </NavItem>
-          <NavItem>
-            <NavLink href="#">Another Link</NavLink>
-          </NavItem>
-          <NavItem>
-            <NavLink disabled href="#">
-              Disabled Link
+            <NavLink
+              href={'/'}
+              style={{ color: 'white', opacity: '0', zIndex: '9' }}
+            >
+              Home
             </NavLink>
           </NavItem>
+          <NavItem>
+            <NavLink href={'/browse'} style={{ color: 'white' }}>
+              Browse
+            </NavLink>
+          </NavItem>
+          <NavItem>
+            <NavLink href={'/about'} style={{ color: 'white' }}>
+              About
+            </NavLink>
+          </NavItem>
+
+          <button onClick={toggleNavbar}>Hide</button>
         </Nav>
-      </Collapse>
+      </div>
+      <Navbar
+        color="faded"
+        light
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'space-between'
+        }}
+      >
+        <NavbarToggler
+          onClick={toggleNavbar}
+          id="toggler"
+          style={{ display: `${checkSizeSideBar()}` }}
+        />
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'flex-start',
+            alignItems: 'center'
+          }}
+        >
+          <NavbarBrand href="/">
+            <img
+              src="https://i.imgur.com/LrfQBvG.png"
+              alt=""
+              style={{ height: '60px' }}
+            />
+          </NavbarBrand>
+
+          <NavLink
+            href={'/'}
+            style={{ paddingRight: '10px', display: `${checkSizeTopBar()}` }}
+          >
+            Home
+          </NavLink>
+
+          <NavLink
+            href={'/browse'}
+            style={{
+              paddingRight: '10px',
+              paddingLeft: '10px',
+              display: `${checkSizeTopBar()}`
+            }}
+          >
+            Browse
+          </NavLink>
+
+          <NavLink
+            href={'/about'}
+            style={{ paddingLeft: '10px', display: `${checkSizeTopBar()}` }}
+          >
+            About
+          </NavLink>
+        </div>
+
+        <div>
+          {props.user ? (
+            <LogoutButton onLogoutSuccess={props.onLogoutSuccess} />
+          ) : (
+            <LoginButton onSuccess={props.onSuccess} />
+          )}
+        </div>
+      </Navbar>
     </div>
   )
 }
