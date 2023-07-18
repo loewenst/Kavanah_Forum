@@ -46,7 +46,7 @@ def topic_detail(request, pk):
 
       return Response(serializer.data)
 
-@api_view(['GET', 'POST'])
+@api_view(['GET'])
 def posts(request):
     if request.method == 'GET':
         data = Post.objects.all()
@@ -55,13 +55,18 @@ def posts(request):
 
         return Response(serializer.data)
 
-    elif request.method == 'POST':
+@api_view(['POST'])
+# @permission_classes([permissions.IsAuthenticated])
+def createpost(request):
+    if request.method == 'POST':
         serializer = PostSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(status=status.HTTP_201_CREATED)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 
 @api_view(['GET', 'PUT', 'DELETE'])
 def post_detail(request, pk):

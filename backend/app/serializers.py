@@ -9,21 +9,23 @@ class UserSerializer(serializers.ModelSerializer):
       model = User
       fields = ('pk', 'email')
 
-class PostSerializer(serializers.ModelSerializer):
-    user = UserSerializer(read_only=True)
 
-    class Meta:
-        model = Post
-        fields = ('pk', 'user', 'topic', 'main_emotion', 'tldr', 'date', 'elaboration', 'sources', 'helpful', 'grounded')
       
 
 class TopicSerializer(serializers.ModelSerializer):
 
-    posts = PostSerializer(many=True, read_only=True)
-
     class Meta:
         model = Topic
         fields = ('pk', 'title', 'superTopic', 'posts')
+        depth = 2
+
+class PostSerializer(serializers.ModelSerializer):
+    # user_id = UserSerializer(read_only=True)
+
+    class Meta:
+        model = Post
+        fields = "__all__"
+        # fields = ('pk', 'user_id', 'topic_id', 'main_emotion', 'tldr', 'date', 'elaboration', 'sources', 'helpful', 'grounded')
 
 class CommentSerializer(serializers.ModelSerializer):
 

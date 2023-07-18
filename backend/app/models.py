@@ -21,8 +21,8 @@ class Post(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     elaboration = models.CharField(max_length=100000, blank=True, null=True)
     sources = models.CharField(max_length=2000, null=True, blank=True)
-    helpful = models.IntegerField(null=True)
-    grounded = models.IntegerField(null=True)
+    helpful = models.IntegerField(null=True, blank=True)
+    grounded = models.IntegerField(null=True, blank=True)
     
     def __str__(self):
       return self.tldr

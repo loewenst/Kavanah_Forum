@@ -5,13 +5,16 @@ import { Button, Card, CardHeader, CardBody, Collapse } from 'reactstrap'
 import * as AiIcons from 'react-icons/ai'
 
 const SuperTopic = (props) => {
+  const topic = props.superTopic
+
+  //Controls for toggling subtopics
   const [isOpen, setIsOpen] = useState(false)
   const toggle = () => {
     setIsOpen(!isOpen)
   }
-  const topic = props.superTopic
 
-  const isSmallScreen = useMediaQuery({ query: '(max-width: 700px)' })
+  //Responsive design
+  const isSmallScreen = useMediaQuery({ query: '(max-width: 900px)' })
   const checkSizeButtonsWidth = () => {
     if (isSmallScreen) {
       return '36vw'

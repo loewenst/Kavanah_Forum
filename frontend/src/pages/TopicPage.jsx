@@ -34,6 +34,23 @@ const TopicPage = (props) => {
   const [content, setContent] = useState('posts')
   const [modal, setModal] = useState(false)
 
+  // user = models.ForeignKey(User, on_delete=models.CASCADE)
+  // topic = models.ForeignKey(Topic, related_name="posts", on_delete=models.CASCADE)
+  // main_emotion = models.CharField(max_length=100, blank=True, null=True)
+  // tldr = models.CharField(max_length=500)
+  // date = models.DateTimeField(auto_now_add=True)
+  // elaboration = models.CharField(max_length=100000, blank=True, null=True)
+  // sources = models.CharField(max_length=2000, null=True, blank=True)
+
+  const initialFormData = {
+    main_emotion: '',
+    tldr: '',
+    elaboration: '',
+    sources: ''
+  }
+
+  const [formData, setFormData] = useState(initialFormData)
+
   //State-Setting Functions
   const subTopicArray = []
   const getSubTopics = async () => {
@@ -98,6 +115,30 @@ const TopicPage = (props) => {
   }
 
   const toggleModal = () => setModal(!modal)
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    })
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    console.log(props.user)
+    const obj = {
+      topic: parseInt(topicId),
+      user: props.user.data.pk,
+      main_emotion: formData.main_emotion,
+      tldr: formData.tldr,
+      elaboration: formData.elaboration,
+      sources: formData.sources
+    }
+    console.log(obj)
+    const token = localStorage.getItem('access_token')
+    axiosInstance(token).post('createpost/', obj)
+    getPostsByTopic()
+  }
 
   useEffect(() => {
     getPostsByTopic()
@@ -214,14 +255,22 @@ const TopicPage = (props) => {
       </Nav>
       {content === 'posts' && posts.map((post) => <PostCard post={post} />)}
       <Modal isOpen={modal} toggle={toggleModal}>
-        <ModalHeader toggle={toggleModal}>Modal title</ModalHeader>
+        <ModalHeader toggle={toggleModal}>
+          Create a Post about {topicName}
+        </ModalHeader>
         <ModalBody>
-          <PostForm user={props.user} />
+          <PostForm user={props.user} handleChange={handleChange} />
         </ModalBody>
         <ModalFooter>
-          <Button color="primary" onClick={toggleModal}>
-            Do Something
-          </Button>{' '}
+          <Button
+            color="primary"
+            onClick={(e) => {
+              handleSubmit(e)
+              toggleModal()
+            }}
+          >
+            Submit
+          </Button>
           <Button color="secondary" onClick={toggleModal}>
             Cancel
           </Button>
