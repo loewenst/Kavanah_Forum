@@ -3,26 +3,38 @@ import { useParams } from 'react-router-dom'
 import axiosInstance from '../components/AxiosInstance'
 import SuperTopic from '../components/SuperTopic'
 import PostForm from '../components/PostForm'
+import PostCard from '../components/PostCard'
 import {
   Button,
   Card,
   CardImg,
-  Collapse,
   CardImgOverlay,
   CardTitle,
-  CardText
+  CardText,
+  Nav,
+  NavItem,
+  NavLink,
+  Modal,
+  ModalBody,
+  ModalHeader,
+  ModalFooter
 } from 'reactstrap'
 
 const TopicPage = (props) => {
   let { topicId } = useParams()
   let emotionsArray = []
+
+  //State Variables
   const [subTopics, setSubTopics] = useState([])
   const [posts, setPosts] = useState([])
   const [topicName, setTopicName] = useState('')
   const [superTopic, setSuperTopic] = useState('')
   const [topThreeEmotions, setTopThreeEmotions] = useState([])
   const [otherEmotions, setOtherEmotions] = useState('')
+  const [content, setContent] = useState('posts')
+  const [modal, setModal] = useState(false)
 
+  //State-Setting Functions
   const getPostsByTopic = async () => {
     const token = localStorage.getItem('access_token')
     const response = await axiosInstance(token).get(`topics/${topicId}`)
@@ -42,6 +54,7 @@ const TopicPage = (props) => {
         workingArray.push(obj)
       }
     })
+    console.log(workingArray)
     setSubTopics(workingArray)
   }
 
@@ -73,18 +86,29 @@ const TopicPage = (props) => {
       setTopThreeEmotions(emotionsArray.join(', '))
     }
   }
-  useEffect(() => {
-    getEmotions()
-  }, [topicId])
-  //
+
+  const toggleContent = (content) => {
+    if (content === 'posts') {
+      setContent('posts')
+    }
+    //The below is setup for a future feature
+    if (content === 'questions') {
+      setContent('questions')
+    }
+  }
+
+  const toggleModal = () => setModal(!modal)
+
   useEffect(() => {
     getPostsByTopic()
     getSubTopics()
-  }, [topicId])
+    getEmotions()
+  }, [])
   //
 
   return (
     <div>
+      {/* Banner */}
       <Card
         style={{
           width: '70%',
@@ -138,6 +162,7 @@ const TopicPage = (props) => {
           )}
           <br />
           <Button
+            onClick={toggleModal}
             style={{
               fontFamily: "'Inter', sans-serif",
               color: 'grey',
@@ -152,24 +177,52 @@ const TopicPage = (props) => {
       </Card>
       <br />
       <br />
+
+      {/* Checking and Displaying Subtopics */}
       {subTopics.length > 0 && (
         <div>
-          <p style={{ marginLeft: '15vw', marginRight: '15vw' }}>
-            This page is a category page. If you're looking to read or post
-            about this category, you're in the right place. Otherwise, use the
-            links below to get to the specific prayer you're looking for.
+          <p
+            style={{
+              marginLeft: '6vw',
+              marginRight: '6vw',
+              fontSize: 'smaller'
+            }}
+          >
+            <span style={{ fontWeight: 'bold' }}>Note:</span> This page is a
+            category page. If you're looking to read or post about this
+            category, you're in the right place. Otherwise, use the links below
+            to get to the specific prayer you're looking for.
           </p>
           <SuperTopic array={subTopics} superTopic={topicName} />
         </div>
       )}
-      <div className="card">
-        <h5>Emotion: Awe</h5>
-        <h5>
-          I feel amazed that God created something so complex and integrated{' '}
-        </h5>
-        <h5>Helpful: | Grounded: | Comments: </h5>
-      </div>
-      <PostForm user={props.user} />
+      <br />
+      <br />
+      {/* Now we want to use the slider view thing like in Google Classroom */}
+      <Nav tabs justified>
+        <NavItem></NavItem>
+        <NavItem>
+          <NavLink onClick={() => toggleContent('posts')} active>
+            Posts
+          </NavLink>
+        </NavItem>
+        <NavItem></NavItem>
+      </Nav>
+      {content === 'posts' && posts.map((post) => <PostCard post={post} />)}
+      <Modal isOpen={modal} toggle={toggleModal}>
+        <ModalHeader toggle={toggleModal}>Modal title</ModalHeader>
+        <ModalBody>
+          <PostForm user={props.user} />
+        </ModalBody>
+        <ModalFooter>
+          <Button color="primary" onClick={toggleModal}>
+            Do Something
+          </Button>{' '}
+          <Button color="secondary" onClick={toggleModal}>
+            Cancel
+          </Button>
+        </ModalFooter>
+      </Modal>
     </div>
   )
 }

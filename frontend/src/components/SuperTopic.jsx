@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
+import { useMediaQuery } from 'react-responsive'
 import { Button, Card, CardHeader, CardBody, Collapse } from 'reactstrap'
 import * as AiIcons from 'react-icons/ai'
 
@@ -8,8 +9,23 @@ const SuperTopic = (props) => {
   const toggle = () => {
     setIsOpen(!isOpen)
   }
-
   const topic = props.superTopic
+
+  const isSmallScreen = useMediaQuery({ query: '(max-width: 700px)' })
+  const checkSizeButtonsWidth = () => {
+    if (isSmallScreen) {
+      return '36vw'
+    } else {
+      return '28vw'
+    }
+  }
+  const checkSizeButtonsHeight = () => {
+    if (isSmallScreen) {
+      return '10vh'
+    } else {
+      return 'auto'
+    }
+  }
 
   return (
     <Card
@@ -33,8 +49,8 @@ const SuperTopic = (props) => {
             display: 'flex',
             flexWrap: 'wrap',
             alignItems: 'center',
-            maxWidth: '90vw',
-            paddingLeft: '2.4vw'
+            justifyContent: 'center',
+            maxWidth: '90vw'
           }}
         >
           {props.array.map((topic) => (
@@ -42,7 +58,8 @@ const SuperTopic = (props) => {
               <Button
                 style={{
                   backgroundColor: '#086320',
-                  width: '28vw',
+                  width: `${checkSizeButtonsWidth()}`,
+                  height: `${checkSizeButtonsHeight()}`,
                   margin: '2px'
                 }}
               >
