@@ -17,10 +17,13 @@ const SuperTopic = (props) => {
       inverse
       style={{ width: '90vw', backgroundColor: '#76c18a' }}
     >
-      <CardHeader style={{ display: 'flex', justifyContent: 'space-between' }}>
+      <CardHeader
+        onClick={toggle}
+        style={{ display: 'flex', justifyContent: 'space-between' }}
+      >
         <div style={{ textAlign: 'left' }}>{topic}</div>
 
-        <div onClick={toggle}>
+        <div>
           <AiIcons.AiOutlineDown />
         </div>
       </CardHeader>

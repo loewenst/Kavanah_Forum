@@ -25,6 +25,17 @@ def topics(request):
         return Response(serializer.data)
 
 @api_view(['GET'])
+# @permission_classes([permissions.IsAuthenticated])
+def subtopics(request):
+    if request.method == 'GET':
+        superTopic = request.GET.get('supertopic')
+        data = Topic.objects.filter(superTopic=superTopic)
+
+        serializer = TopicSerializer(data, context={'request': request}, many=True)
+
+        return Response(serializer.data)
+
+@api_view(['GET'])
 def topic_detail(request, pk):
   try:
     data = Topic.objects.get(pk=pk)
