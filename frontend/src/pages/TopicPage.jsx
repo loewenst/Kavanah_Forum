@@ -35,18 +35,18 @@ const TopicPage = (props) => {
   const [modal, setModal] = useState(false)
 
   //State-Setting Functions
+  const subTopicArray = []
   const getSubTopics = async () => {
     const token = localStorage.getItem('access_token')
     const response = await axiosInstance(token).get('topics/')
-    console.log(response)
-    let workingArray = []
+    console.log(topicName, response.data)
     response.data.forEach((obj) => {
       if (obj.superTopic === topicName) {
-        workingArray.push(obj)
+        subTopicArray.push(obj)
       }
     })
-    console.log(workingArray)
-    setSubTopics(workingArray)
+    console.log(subTopicArray)
+    setSubTopics(subTopicArray)
   }
 
   const getPostsByTopic = async () => {
@@ -101,9 +101,11 @@ const TopicPage = (props) => {
 
   useEffect(() => {
     getPostsByTopic()
-    getSubTopics()
     getEmotions()
-  }, [])
+  }, [topicId])
+  useEffect(() => {
+    getSubTopics()
+  }, [superTopic])
   //
 
   return (
