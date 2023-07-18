@@ -25,25 +25,16 @@ const TopicPage = (props) => {
   let emotionsArray = []
 
   //State Variables
-  const [subTopics, setSubTopics] = useState([])
   const [posts, setPosts] = useState([])
   const [topicName, setTopicName] = useState('')
   const [superTopic, setSuperTopic] = useState('')
+  const [subTopics, setSubTopics] = useState([])
   const [topThreeEmotions, setTopThreeEmotions] = useState([])
   const [otherEmotions, setOtherEmotions] = useState('')
   const [content, setContent] = useState('posts')
   const [modal, setModal] = useState(false)
 
   //State-Setting Functions
-  const getPostsByTopic = async () => {
-    const token = localStorage.getItem('access_token')
-    const response = await axiosInstance(token).get(`topics/${topicId}`)
-    console.log(response.data)
-    setPosts(response.data.posts)
-    setTopicName(response.data.title)
-    setSuperTopic(response.data.superTopic)
-  }
-
   const getSubTopics = async () => {
     const token = localStorage.getItem('access_token')
     const response = await axiosInstance(token).get('topics/')
@@ -56,6 +47,15 @@ const TopicPage = (props) => {
     })
     console.log(workingArray)
     setSubTopics(workingArray)
+  }
+
+  const getPostsByTopic = async () => {
+    const token = localStorage.getItem('access_token')
+    const response = await axiosInstance(token).get(`topics/${topicId}`)
+    console.log(response.data)
+    setPosts(response.data.posts)
+    setTopicName(response.data.title)
+    setSuperTopic(response.data.superTopic)
   }
 
   const getEmotions = () => {
@@ -114,7 +114,8 @@ const TopicPage = (props) => {
           width: '70%',
           height: '40vh',
           boxShadow: '5px 5px 5px lightgrey',
-          margin: '0 auto'
+          margin: '0 auto',
+          borderRadius: '0'
         }}
       >
         <CardImg
@@ -124,7 +125,8 @@ const TopicPage = (props) => {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            justifyContent: 'end'
+            justifyContent: 'end',
+            borderRadius: '0'
           }}
         />
         <CardImgOverlay
