@@ -16,7 +16,7 @@ class TopicSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Topic
-        fields = ('pk', 'title', 'superTopic', 'posts')
+        fields = "__all__"
         depth = 2
 
 class PostSerializer(serializers.ModelSerializer):
@@ -25,7 +25,16 @@ class PostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
         fields = "__all__"
+        depth = 2
         # fields = ('pk', 'user_id', 'topic_id', 'main_emotion', 'tldr', 'date', 'elaboration', 'sources', 'helpful', 'grounded')
+
+class CreatePostSerializer(serializers.ModelSerializer):
+    user = UserSerializer
+    topic = TopicSerializer
+    
+    class Meta:
+        model = Post
+        fields = ('user', 'topic', 'main_emotion', 'tldr', 'elaboration', 'sources')
 
 class CommentSerializer(serializers.ModelSerializer):
 

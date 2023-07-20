@@ -6,6 +6,7 @@ import * as AiIcons from 'react-icons/ai'
 
 const SuperTopic = (props) => {
   const topic = props.superTopic
+  console.log('SuperTopic Array: ', props.array)
 
   //Controls for toggling subtopics
   const [isOpen, setIsOpen] = useState(false)
@@ -57,7 +58,7 @@ const SuperTopic = (props) => {
           }}
         >
           {props.array.map((topic) => (
-            <Link key={topic.pk} to={`/t/${topic.pk}`}>
+            <Link key={topic.id} to={`/t/${topic.id}`}>
               <Button
                 style={{
                   backgroundColor: '#086320',

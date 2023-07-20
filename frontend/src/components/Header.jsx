@@ -12,6 +12,7 @@ import {
 import LoginButton from './LoginButton'
 import LogoutButton from './LogoutButton'
 import { gapi } from 'gapi-script'
+import * as AiIcons from 'react-icons/ai'
 
 const Header = (props) => {
   // setting side navbar state
@@ -54,7 +55,7 @@ const Header = (props) => {
       <div
         style={{
           background: 'rgb(54, 53, 53)',
-          width: '250px',
+          width: '175px',
           height: '100vh',
           display: 'flex',
           paddingLeft: '20px',
@@ -66,12 +67,15 @@ const Header = (props) => {
           zIndex: '10'
         }}
       >
-        <Nav vertical>
+        <Nav vertical style={{ paddingBottom: '40px' }}>
+          <div style={{ display: 'flex', justifyContent: 'right' }}>
+            <AiIcons.AiOutlineLeft
+              onClick={toggleNavbar}
+              style={{ color: 'white' }}
+            />
+          </div>
           <NavItem>
-            <NavLink
-              href={'/'}
-              style={{ color: 'white', opacity: '0', zIndex: '9' }}
-            >
+            <NavLink href={'/'} style={{ color: 'white' }}>
               Home
             </NavLink>
           </NavItem>
@@ -85,8 +89,13 @@ const Header = (props) => {
               About
             </NavLink>
           </NavItem>
-
-          <button onClick={toggleNavbar}>Hide</button>
+          <div>
+            {props.user ? (
+              <LogoutButton onLogoutSuccess={props.onLogoutSuccess} />
+            ) : (
+              <LoginButton onSuccess={props.onSuccess} />
+            )}
+          </div>
         </Nav>
       </div>
       <Navbar
@@ -98,11 +107,6 @@ const Header = (props) => {
           justifyContent: 'space-between'
         }}
       >
-        <NavbarToggler
-          onClick={toggleNavbar}
-          id="toggler"
-          style={{ display: `${checkSizeSideBar()}` }}
-        />
         <div
           style={{
             display: 'flex',
@@ -112,18 +116,11 @@ const Header = (props) => {
         >
           <NavbarBrand href="/">
             <img
-              src="https://i.imgur.com/LrfQBvG.png"
+              src="https://i.imgur.com/5Z26kqF.png"
               alt=""
               style={{ height: '60px' }}
             />
           </NavbarBrand>
-
-          <NavLink
-            href={'/'}
-            style={{ paddingRight: '10px', display: `${checkSizeTopBar()}` }}
-          >
-            Home
-          </NavLink>
 
           <NavLink
             href={'/browse'}
@@ -144,13 +141,18 @@ const Header = (props) => {
           </NavLink>
         </div>
 
-        <div>
+        <div style={{ display: `${checkSizeTopBar()}` }}>
           {props.user ? (
             <LogoutButton onLogoutSuccess={props.onLogoutSuccess} />
           ) : (
             <LoginButton onSuccess={props.onSuccess} />
           )}
         </div>
+        <NavbarToggler
+          onClick={toggleNavbar}
+          id="toggler"
+          style={{ display: `${checkSizeSideBar()}` }}
+        />
       </Navbar>
     </div>
   )

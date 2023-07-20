@@ -59,7 +59,7 @@ def posts(request):
 # @permission_classes([permissions.IsAuthenticated])
 def createpost(request):
     if request.method == 'POST':
-        serializer = PostSerializer(data=request.data)
+        serializer = CreatePostSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(status=status.HTTP_201_CREATED)

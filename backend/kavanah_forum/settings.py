@@ -27,12 +27,12 @@ environ.Env.read_env()
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env('DJANGO_SECRET')
+SECRET_KEY = env.str('DJANGO_SECRET')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env('DEBUG')
 
-ALLOWED_HOSTS = ['.herokuapp.com', '127.0.0.1.8000', 'localhost:8000']
+ALLOWED_HOSTS = ['.herokuapp.com', '127.0.0.1', 'localhost']
 
 
 # Application definition
@@ -96,11 +96,18 @@ WSGI_APPLICATION = 'kavanah_forum.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    'default': env.db()
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.postgresql',
-    #     'NAME': 'kavanah_forum',
-    # }
+    # 'default': env.db()
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'kavanahforum',
+        'USER':'loewenst',
+        'PASSWORD':env.str('POSTGRESDB_PASSWORD'),
+        'HOST':env.str('DATABASE_URL'),
+        'PORT':'5432',
+
+
+
+    }
 }
 
 

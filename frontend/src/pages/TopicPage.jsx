@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import axiosInstance from '../components/AxiosInstance'
 import SuperTopic from '../components/SuperTopic'
 import PostForm from '../components/PostForm'
@@ -34,14 +34,6 @@ const TopicPage = (props) => {
   const [content, setContent] = useState('posts')
   const [modal, setModal] = useState(false)
 
-  // user = models.ForeignKey(User, on_delete=models.CASCADE)
-  // topic = models.ForeignKey(Topic, related_name="posts", on_delete=models.CASCADE)
-  // main_emotion = models.CharField(max_length=100, blank=True, null=True)
-  // tldr = models.CharField(max_length=500)
-  // date = models.DateTimeField(auto_now_add=True)
-  // elaboration = models.CharField(max_length=100000, blank=True, null=True)
-  // sources = models.CharField(max_length=2000, null=True, blank=True)
-
   const initialFormData = {
     main_emotion: '',
     tldr: '',
@@ -70,9 +62,22 @@ const TopicPage = (props) => {
     const token = localStorage.getItem('access_token')
     const response = await axiosInstance(token).get(`topics/${topicId}`)
     console.log(response.data)
-    setPosts(response.data.posts)
     setTopicName(response.data.title)
     setSuperTopic(response.data.superTopic)
+  }
+
+  const getPosts = async () => {
+    const token = localStorage.getItem('access_token')
+    const response = await axiosInstance(token).get(`posts/`)
+    console.log('All posts:', response)
+    let workingArray = []
+    response.data.forEach((post) => {
+      if (post.topic.title === topicName) {
+        workingArray.push(post)
+      }
+    })
+    console.log(workingArray)
+    setPosts(workingArray)
   }
 
   const getEmotions = () => {
@@ -123,12 +128,12 @@ const TopicPage = (props) => {
     })
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     console.log(props.user)
     const obj = {
-      topic: parseInt(topicId),
       user: props.user.data.pk,
+      topic: parseInt(topicId),
       main_emotion: formData.main_emotion,
       tldr: formData.tldr,
       elaboration: formData.elaboration,
@@ -137,16 +142,28 @@ const TopicPage = (props) => {
     console.log(obj)
     const token = localStorage.getItem('access_token')
     axiosInstance(token).post('createpost/', obj)
-    getPostsByTopic()
+    const response = await axiosInstance(token).get(`posts/`)
+    console.log('All posts:', response)
+    let workingArray = []
+    response.data.forEach((post) => {
+      if (post.topic.title === topicName) {
+        workingArray.push(post)
+      }
+    })
+    console.log(workingArray)
+    setPosts(workingArray)
   }
 
   useEffect(() => {
     getPostsByTopic()
-    getEmotions()
   }, [topicId])
   useEffect(() => {
+    // getEmotions()
     getSubTopics()
   }, [superTopic])
+  useEffect(() => {
+    getPosts()
+  }, [topicName])
   //
 
   return (
@@ -198,13 +215,13 @@ const TopicPage = (props) => {
           >
             Category: {superTopic}
           </CardText>
-          {topThreeEmotions.length > 0 && (
+          {/* {topThreeEmotions.length > 0 && (
             <CardText>
               <small className="text-muted">
                 {topThreeEmotions} {otherEmotions}
               </small>
             </CardText>
-          )}
+          )} */}
           <br />
           <Button
             onClick={toggleModal}
@@ -253,7 +270,15 @@ const TopicPage = (props) => {
         </NavItem>
         <NavItem></NavItem>
       </Nav>
-      {content === 'posts' && posts.map((post) => <PostCard post={post} />)}
+      {posts?.map((post) => (
+        <Link
+          key={post.id}
+          to={`/t/${topicId}/${post.id}`}
+          style={{ textDecoration: 'none' }}
+        >
+          <PostCard post={post} />
+        </Link>
+      ))}
       <Modal isOpen={modal} toggle={toggleModal}>
         <ModalHeader toggle={toggleModal}>
           Create a Post about {topicName}

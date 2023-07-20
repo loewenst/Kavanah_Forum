@@ -5,6 +5,7 @@ import Header from './components/Header'
 import Home from './pages/Home'
 import About from './pages/About'
 import Topics from './pages/Topics'
+import TestTopics from './pages/TestTopics'
 import TopicPage from './pages/TopicPage'
 import PostPage from './pages/PostPage'
 import axios from 'axios'
@@ -19,16 +20,6 @@ function App() {
   const [user, setUser] = useState(null)
 
   const getUserData = async (token) => {
-    // const axiosInstance = axios.create({
-    //   baseURL: 'http://localhost:8000/api/',
-    //   timeout: 5000,
-    //   headers: {
-    //     Authorization: 'Bearer ' + token,
-    //     'Content-Type': 'application/json',
-    //     accept: 'application/json'
-    //   }
-    // })
-
     const axiosBase = axiosInstance(token)
     let response = await axiosBase.get('user_info/')
     console.log(response)
@@ -37,13 +28,17 @@ function App() {
 
   const djangoLogin = async (token) => {
     await axios
-      .post('http://localhost:8000/auth/convert-token', {
-        token: token,
-        backend: 'google-oauth2',
-        grant_type: 'convert_token',
-        client_id: backendId,
-        client_secret: backendSecret
-      })
+      // https://kavanahforum-e2c5663ae901.herokuapp.com/api/
+      .post(
+        'https://kavanahforum-e2c5663ae901.herokuapp.com/auth/convert-token',
+        {
+          token: token,
+          backend: 'google-oauth2',
+          grant_type: 'convert_token',
+          client_id: backendId,
+          client_secret: backendSecret
+        }
+      )
       .then((res) => {
         localStorage.setItem('access_token', res.data.access_token)
         localStorage.setItem('refresh_token', res.data.refresh_token)
@@ -86,8 +81,9 @@ function App() {
           />
           <Route path="about" element={<About />} />
           <Route path="browse" element={<Topics user={user} />} />
+          <Route path="test" element={<TestTopics user={user} />} />
           <Route path="t/:topicId" element={<TopicPage user={user} />} />
-          <Route path="t/:topicId/:postId" element={<PostPage />} />
+          <Route path="t/:topicId/:postId" element={<PostPage user={user} />} />
         </Routes>
       </main>
     </div>
