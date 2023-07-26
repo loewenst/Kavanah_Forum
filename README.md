@@ -17,7 +17,13 @@ There is a well-known perennial problem in the space of traditional Jewish praye
 
 ## Usage
 
-[insert images, descriptions]
+Users can interact with the content of the application through the "browse" tab. This takes users to a master list of all prayer categories, with clickable links to individual prayers.
+
+On each individual prayer's page, users can view all existing posts and questions for that prayer. Clicking a post brings users to the post's page, where they can see more information about the post, as well as any comments. The same applies to clicking a question and seeing all responses.
+
+Logged in users also have the option to add posts, comments, questions and responses, and edit or delete any that they have made.
+
+Posts take a very specific form - they must include at least one emotion and a brief description, as well as optional fields for additional emotions, an elaboration and sources. The rationale for this format will be explained in depth in a forthcoming wiki.
 
 ## Credits
 
