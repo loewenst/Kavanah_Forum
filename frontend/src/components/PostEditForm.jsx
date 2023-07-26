@@ -4,30 +4,7 @@ import { Form, Row, Col, FormGroup, Label, Input, Button } from 'reactstrap'
 import Emotions from './Emotions'
 import * as FcIcons from 'react-icons/fc'
 
-// need imports
-//post object needs:
-
-//topic id
-//user id
-//tl;dr
-//emotion
-//opt: elaboration
-//opt: sources
-//opt: other emotions
-//opt: related topics
-
-//form: fields:
-//topic (for now)
-//emotion
-//one liner
-//elaboration
-//
 const PostEditForm = (props) => {
-  // const initialState = {
-  //   pk: 0,
-  //   user: userId
-  // }
-
   const [secondEmotionList, setSecondEmotionList] = useState([])
   const [thirdEmotionList, setThirdEmotionList] = useState([])
 
@@ -55,6 +32,7 @@ const PostEditForm = (props) => {
           <Input
             id="tldr"
             name="tldr"
+            value={props.initialFormData.tldr}
             placeholder="When I say this, I feel/think..."
             type="text"
             onChange={(e) => props.handleChange(e)}
@@ -69,6 +47,7 @@ const PostEditForm = (props) => {
               id="main_emotion"
               name="main_emotion"
               type="select"
+              value={props.initialFormData.main_emotion}
               onChange={(e) => {
                 getSecondEmotionList(e.target.value)
                 props.handleChange(e)
@@ -120,13 +99,24 @@ const PostEditForm = (props) => {
         <Label for="elaboration">
           Elaboration <FcIcons.FcInfo />
         </Label>
-        <Input id="elaboration" name="elaboration" type="textarea" />
+        <Input
+          id="elaboration"
+          name="elaboration"
+          type="textarea"
+          value={props.initialFormData.elaboration}
+          onChange={(e) => props.handleChange(e)}
+        />
       </FormGroup>
       <Row>
         <Col sm={6}>
           <FormGroup>
             <Label for="sources">Sources</Label>
-            <Input id="sources" type="text"></Input>
+            <Input
+              id="sources"
+              type="text"
+              value={props.initialFormData.sources}
+              onChange={(e) => props.handleChange(e)}
+            ></Input>
           </FormGroup>
         </Col>
         <Col sm={6}>

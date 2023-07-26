@@ -120,13 +120,22 @@ const PostForm = (props) => {
         <Label for="elaboration">
           Elaboration <FcIcons.FcInfo />
         </Label>
-        <Input id="elaboration" name="elaboration" type="textarea" />
+        <Input
+          id="elaboration"
+          name="elaboration"
+          type="textarea"
+          onChange={(e) => props.handleChange(e)}
+        />
       </FormGroup>
       <Row>
         <Col sm={6}>
           <FormGroup>
             <Label for="sources">Sources</Label>
-            <Input id="sources" type="text"></Input>
+            <Input
+              id="sources"
+              type="text"
+              onChange={(e) => props.handleChange(e)}
+            ></Input>
           </FormGroup>
         </Col>
         <Col sm={6}>

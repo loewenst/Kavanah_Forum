@@ -1,21 +1,21 @@
 from django.shortcuts import render
 from rest_framework.response import Response
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework import status, permissions
-
+from rest_framework.exceptions import PermissionDenied
 from .models import Topic, Post, Comment
 from .serializers import *
-
 # Create your views here.
 
 @api_view(['GET'])
+@permission_classes([permissions.IsAuthenticated])
 def user_info(request):
     data = request.user
     serializer = UserSerializer(data, context={'request': request})
     return Response(serializer.data)
 
 @api_view(['GET'])
-# @permission_classes([permissions.IsAuthenticated])
+@authentication_classes([])
 def topics(request):
     if request.method == 'GET':
         data = Topic.objects.all()
@@ -25,7 +25,7 @@ def topics(request):
         return Response(serializer.data)
 
 @api_view(['GET'])
-# @permission_classes([permissions.IsAuthenticated])
+@authentication_classes([])
 def subtopics(request):
     if request.method == 'GET':
         superTopic = request.GET.get('supertopic')
@@ -36,6 +36,7 @@ def subtopics(request):
         return Response(serializer.data)
 
 @api_view(['GET'])
+@authentication_classes([])
 def topic_detail(request, pk):
   try:
     data = Topic.objects.get(pk=pk)
@@ -47,6 +48,7 @@ def topic_detail(request, pk):
       return Response(serializer.data)
 
 @api_view(['GET'])
+@authentication_classes([])
 def posts(request):
     if request.method == 'GET':
         data = Post.objects.all()
@@ -56,7 +58,7 @@ def posts(request):
         return Response(serializer.data)
 
 @api_view(['POST'])
-# @permission_classes([permissions.IsAuthenticated])
+@permission_classes([permissions.IsAuthenticated])
 def createpost(request):
     if request.method == 'POST':
         serializer = CreatePostSerializer(data=request.data)
@@ -68,7 +70,8 @@ def createpost(request):
 
 
 
-@api_view(['GET', 'PUT', 'DELETE'])
+@api_view(['GET'])
+@authentication_classes([])
 def post_detail(request, pk):
     try:
         post = Post.objects.get(pk=pk)
@@ -81,19 +84,40 @@ def post_detail(request, pk):
 
       return Response(serializer.data)
 
-    elif request.method == 'PUT':
-        serializer = PostSerializer(post, data=request.data,context={'request': request})
+@api_view(['PUT', 'DELETE'])
+@permission_classes([permissions.IsAuthenticated])
+def post_modify(request, pk):
+    try:
+        post = Post.objects.get(pk=pk)
+    except Post.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'PUT':
+        serializer = CreatePostSerializer(post, data=request.data,context={'request': request})
         if serializer.is_valid():
-            serializer.save()
-            return Response(status=status.HTTP_204_NO_CONTENT)
+            print(serializer.validated_data['user'])
+            print(request.user)
+            print(serializer.validated_data['user'] == request.user)
+            if serializer.validated_data['user'] != request.user:
+                raise PermissionDenied
+            else:
+                serializer.save()
+                return Response(status=status.HTTP_204_NO_CONTENT)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     elif request.method == 'DELETE':
-        post.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        if post.user != request.user:
+            raise PermissionDenied
+        else:
+            print(post.user)
+            print(request.user)
+            print(post.user == request.user)
+            post.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-@api_view(['GET', 'POST'])
+@api_view(['GET'])
+@authentication_classes([])
 def comments(request):
     if request.method == 'GET':
         data = Comment.objects.all()
@@ -102,7 +126,11 @@ def comments(request):
 
         return Response(serializer.data)
 
-    elif request.method == 'POST':
+
+@api_view(['POST'])
+@permission_classes([permissions.IsAuthenticated])
+def postcomment(request):
+    if request.method == 'POST':
         serializer = CommentSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -111,6 +139,7 @@ def comments(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['PUT', 'DELETE'])
+@permission_classes([permissions.IsAuthenticated])
 def comment_detail(request, pk):
     try:
         comment = Comment.objects.get(pk=pk)
@@ -129,11 +158,12 @@ def comment_detail(request, pk):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-@api_view(['GET'])
-def users(request):
-    if request.method == 'GET':
-        data = User.objects.all()
+# @api_view(['GET'])
+# @permission_classes([permissions.IsAuthenticated])
+# def users(request):
+#     if request.method == 'GET':
+#         data = User.objects.all()
 
-        serializer = UserSerializer(data, context={'request': request}, many=True)
+#         serializer = UserSerializer(data, context={'request': request}, many=True)
 
-        return Response(serializer.data)
+#         return Response(serializer.data)

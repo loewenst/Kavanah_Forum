@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import PostCard from '../components/PostCard'
 import { useEffect, useState } from 'react'
 import axiosInstance from '../components/AxiosInstance'
@@ -6,7 +6,8 @@ import PostEditForm from '../components/PostEditForm'
 import { Button, Modal, ModalBody, ModalHeader, ModalFooter } from 'reactstrap'
 
 const PostPage = (props) => {
-  const { postId } = useParams()
+  const navigate = useNavigate()
+  const { postId, topicId } = useParams()
   const [post, setPost] = useState(null)
   const axiosBase = axiosInstance(localStorage.getItem('access_token'))
   const [modal, setModal] = useState(false)
@@ -22,7 +23,10 @@ const PostPage = (props) => {
 
   useEffect(() => {
     if (post) {
+      console.log(post)
       setFormData({
+        user: post.user.id,
+        topic: post.topic.id,
         main_emotion: post.main_emotion,
         tldr: post.tldr,
         elaboration: post.elaboration,
@@ -36,11 +40,11 @@ const PostPage = (props) => {
   }
 
   const checkUser = () => {
-    console.log(props)
-    console.log(post)
-    // if (props.user.id === post.user.id) {
-    //   return true
-    // }
+    if (post && props.user) {
+      if (props.user.data.pk === post.user.id) {
+        return true
+      }
+    }
     return false
   }
 
@@ -51,12 +55,43 @@ const PostPage = (props) => {
     setPost(response.data)
   }
 
-  const handleChange = () => {}
-  const handleSubmit = () => {}
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    })
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    const obj = {
+      user: formData.user,
+      topic: formData,
+      main_emotion: formData.main_emotion,
+      tldr: formData.tldr,
+      elaboration: formData.elaboration,
+      sources: formData.sources
+    }
+    console.log(obj)
+    const token = localStorage.getItem('access_token')
+    await axiosInstance(token).put(`modifypost/${postId}`, obj)
+    await getPostById()
+  }
+
+  const handleDelete = async (e) => {
+    e.preventDefault()
+    const token = localStorage.getItem('access_token')
+    await axiosInstance(token).delete(`modifypost/${postId}`)
+    navigate(`/t/${topicId}`)
+  }
 
   useEffect(() => {
     getPostById()
   }, [postId])
+
+  useEffect(() => {
+    checkUser()
+  }, [props.user])
 
   //functions for editing
 
@@ -71,20 +106,28 @@ const PostPage = (props) => {
     >
       {post && <PostCard post={post} />}
       <br />
-      {/* {post && checkUser() && ( */}
-      <Button style={{ width: '20vw' }} onClick={toggleModal}>
-        Edit
-      </Button>
-      {/* )} */}
+      {checkUser() && (
+        <Button style={{ width: '20vw' }} onClick={toggleModal}>
+          Edit
+        </Button>
+      )}
       <br />
-      <Button style={{ width: '20vw' }}>Delete</Button>
+      {checkUser() && (
+        <Button onClick={handleDelete} style={{ width: '20vw' }}>
+          Delete
+        </Button>
+      )}
       {post && (
         <Modal isOpen={modal} toggle={toggleModal}>
           <ModalHeader toggle={toggleModal}>
             Edit your Post about {post.topic.title}
           </ModalHeader>
           <ModalBody>
-            <PostEditForm user={props.user} handleChange={handleChange} />
+            <PostEditForm
+              user={props.user}
+              initialFormData={formData}
+              handleChange={handleChange}
+            />
           </ModalBody>
           <ModalFooter>
             <Button

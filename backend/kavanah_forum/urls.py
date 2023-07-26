@@ -29,9 +29,10 @@ urlpatterns = [
     re_path(r'^api/posts/$', views.posts),
     re_path(r'^api/createpost/$', views.createpost),
     re_path(r'^api/posts/([0-9]*)$', views.post_detail),
+    re_path(r'^api/modifypost/([0-9]*)$', views.post_modify),
     re_path(r'^api/comments/$', views.comments),
+    re_path(r'^api/postcomment/$', views.postcomment),
     re_path(r'^api/comments/[0-9]*$', views.comment_detail),
-    re_path(r'^api/users/$', views.users),
     re_path(r'^api/user_info/$', views.user_info),
     path('api/subtopics/', views.subtopics)
 ]

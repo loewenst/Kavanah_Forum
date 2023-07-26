@@ -41,6 +41,7 @@ const TestTopics = (props) => {
   const patriotismArray = getSuperTopicArray('Patriotism')
   const sightsArray = getSuperTopicArray('Sights to See')
 
+
   return (
     <div>
       <br />

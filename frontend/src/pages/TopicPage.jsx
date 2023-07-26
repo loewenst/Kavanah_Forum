@@ -58,7 +58,7 @@ const TopicPage = (props) => {
     setSubTopics(subTopicArray)
   }
 
-  const getPostsByTopic = async () => {
+  const getTopicData = async () => {
     const token = localStorage.getItem('access_token')
     const response = await axiosInstance(token).get(`topics/${topicId}`)
     console.log(response.data)
@@ -69,14 +69,12 @@ const TopicPage = (props) => {
   const getPosts = async () => {
     const token = localStorage.getItem('access_token')
     const response = await axiosInstance(token).get(`posts/`)
-    console.log('All posts:', response)
     let workingArray = []
     response.data.forEach((post) => {
       if (post.topic.title === topicName) {
         workingArray.push(post)
       }
     })
-    console.log(workingArray)
     setPosts(workingArray)
   }
 
@@ -130,7 +128,6 @@ const TopicPage = (props) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    console.log(props.user)
     const obj = {
       user: props.user.data.pk,
       topic: parseInt(topicId),
@@ -141,7 +138,7 @@ const TopicPage = (props) => {
     }
     console.log(obj)
     const token = localStorage.getItem('access_token')
-    axiosInstance(token).post('createpost/', obj)
+    await axiosInstance(token).post('createpost/', obj)
     const response = await axiosInstance(token).get(`posts/`)
     console.log('All posts:', response)
     let workingArray = []
@@ -155,7 +152,7 @@ const TopicPage = (props) => {
   }
 
   useEffect(() => {
-    getPostsByTopic()
+    getTopicData()
   }, [topicId])
   useEffect(() => {
     // getEmotions()
@@ -223,17 +220,19 @@ const TopicPage = (props) => {
             </CardText>
           )} */}
           <br />
-          <Button
-            onClick={toggleModal}
-            style={{
-              fontFamily: "'Inter', sans-serif",
-              color: 'grey',
-              backgroundColor: 'transparent',
-              border: 'grey solid 4px'
-            }}
-          >
-            ADD POST
-          </Button>
+          {props.user && (
+            <Button
+              onClick={toggleModal}
+              style={{
+                fontFamily: "'Inter', sans-serif",
+                color: 'grey',
+                backgroundColor: 'transparent',
+                border: 'grey solid 4px'
+              }}
+            >
+              ADD POST
+            </Button>
+          )}
           <br />
         </CardImgOverlay>
       </Card>
@@ -260,7 +259,7 @@ const TopicPage = (props) => {
       )}
       <br />
       <br />
-      {/* Now we want to use the slider view thing like in Google Classroom */}
+      {/* Toggling between Posts and Questions */}
       <Nav tabs justified>
         <NavItem></NavItem>
         <NavItem>
@@ -270,15 +269,16 @@ const TopicPage = (props) => {
         </NavItem>
         <NavItem></NavItem>
       </Nav>
-      {posts?.map((post) => (
-        <Link
-          key={post.id}
-          to={`/t/${topicId}/${post.id}`}
-          style={{ textDecoration: 'none' }}
-        >
-          <PostCard post={post} />
-        </Link>
-      ))}
+      {content === 'posts' &&
+        posts.map((post) => (
+          <Link
+            key={post.id}
+            to={`/t/${topicId}/${post.id}`}
+            style={{ textDecoration: 'none' }}
+          >
+            <PostCard post={post} />
+          </Link>
+        ))}
       <Modal isOpen={modal} toggle={toggleModal}>
         <ModalHeader toggle={toggleModal}>
           Create a Post about {topicName}
