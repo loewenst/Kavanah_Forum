@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework import status, permissions
 from rest_framework.exceptions import PermissionDenied
-from .models import Topic, Post, Comment
+from .models import Topic, Post, Comment, Question
 from .serializers import *
 # Create your views here.
 
@@ -57,6 +57,16 @@ def posts(request):
 
         return Response(serializer.data)
 
+@api_view(['GET'])
+@authentication_classes([])
+def questions(request):
+    if request.method == 'GET':
+        data = Question.objects.all()
+
+        serializer = QuestionSerializer(data, context={'request': request}, many=True)
+
+        return Response(serializer.data)
+
 @api_view(['POST'])
 @permission_classes([permissions.IsAuthenticated])
 def createpost(request):
@@ -68,6 +78,17 @@ def createpost(request):
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+@api_view(['POST'])
+@permission_classes([permissions.IsAuthenticated])
+def createquestion(request):
+    if request.method == 'POST':
+        print('data arrived')
+        serializer = CreateQuestionSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(status=status.HTTP_201_CREATED)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['GET'])

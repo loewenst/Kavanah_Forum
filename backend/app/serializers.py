@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import User, Topic, Post, Comment
+from .models import User, Topic, Post, Comment, Question
 
 
 
@@ -41,3 +41,18 @@ class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields = "__all__"
+
+class QuestionSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Question
+        fields = "__all__"
+        depth = 2
+
+class CreateQuestionSerializer(serializers.ModelSerializer):
+    user = UserSerializer
+    topic = TopicSerializer
+
+    class Meta:
+        model = Question
+        fields = ('user', 'topic', 'question_text', 'long_question_text')

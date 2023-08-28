@@ -32,3 +32,19 @@ class Comment(models.Model):
     content = models.CharField('comment', max_length=500)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+class Question(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    topic = models.ForeignKey(Topic, related_name="questions", on_delete=models.CASCADE)
+    question_text = models.CharField(max_length=500, blank=True, null=True)
+    date = models.DateTimeField(auto_now_add=True)
+    long_question_text = models.CharField(max_length=100000, blank=True, null=True)
+    
+    def __str__(self):
+      return self.question_text
+
+class Reply(models.Model):
+    date = models.DateField(auto_now_add=True)
+    content = models.CharField('reply', max_length=500)
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)

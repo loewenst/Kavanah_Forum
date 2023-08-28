@@ -8,6 +8,7 @@ import Topics from './pages/Topics'
 import TestTopics from './pages/TestTopics'
 import TopicPage from './pages/TopicPage'
 import PostPage from './pages/PostPage'
+import QuestionPage from './pages/QuestionPage'
 import axios from 'axios'
 import { useMediaQuery } from 'react-responsive'
 import axiosInstance from './components/AxiosInstance'
@@ -84,6 +85,10 @@ function App() {
           <Route path="test" element={<TestTopics user={user} />} />
           <Route path="t/:topicId" element={<TopicPage user={user} />} />
           <Route path="t/:topicId/:postId" element={<PostPage user={user} />} />
+          <Route
+            path="t/:topicId/q/:questionId"
+            element={<QuestionPage user={user} />}
+          />
         </Routes>
       </main>
     </div>

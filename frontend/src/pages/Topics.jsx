@@ -1,29 +1,22 @@
-import { Link } from 'react-router-dom'
 import { useEffect, useState } from 'react'
-import { Button, Card, CardHeader, CardBody, Collapse } from 'reactstrap'
 import axios from 'axios'
-import * as AiIcons from 'react-icons/ai'
 import SuperTopic from '../components/SuperTopic'
-import axiosInstance from '../components/AxiosInstance'
 
 const Topics = (props) => {
   //setting the topics from the backend
   const [topics, setTopics] = useState([])
-  const axiosBase = axiosInstance(localStorage.getItem('access_token'))
 
   const getTopics = async () => {
-    const response = await axiosBase.get('topics/')
+    const response = await axios.get(
+      'https://kavanahforum-e2c5663ae901.herokuapp.com/api/topics/'
+    )
     console.log(response.data)
     setTopics(response.data)
   }
 
   useEffect(() => {
-    if (props.user) {
-      getTopics()
-    } else {
-      setTopics([])
-    }
-  }, [props.user])
+    getTopics()
+  }, [])
 
   const getSuperTopicArray = (topic) => {
     console.log(topics)
