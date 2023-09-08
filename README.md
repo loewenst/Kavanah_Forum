@@ -1,6 +1,7 @@
 # Kavanah
 
 Welcome to Kavanah, a forum for sharing intentionalities in the experience of <em>tefilah</em>, Jewish prayer.
+The live site can be accessed [here](https://kavanah-forum-frontend.vercel.app/).
 
 ![techstack](./frontend/public/made-with-react-_-django-rest-framework-_-postgresql.svg)
 
@@ -10,6 +11,7 @@ Welcome to Kavanah, a forum for sharing intentionalities in the experience of <e
 - [Usage](#usage)
 - [Credits](#usage)
 - [Creator Info](#creator-info)
+- [Additional Info](#additional-info)
 
 ## What is Kavanah?
 
@@ -38,6 +40,7 @@ Some of the superb tutorials I used in putting this project together:
 - [Cooper Codes' Google OAuth for React Tutorial](https://www.youtube.com/watch?v=HtJKUQXmtok)
 - [Very Academy's Social Login for DRF Tutorial](https://www.youtube.com/watch?v=wlcCvzOLL8w) (the whole series is great)
 - [Brian Design's React Sidebar Tutorial](https://www.youtube.com/watch?v=mN3P_rv8ad4&t=1768s)
+- [Web Dev Simplified's Loading Skeleton Tutorial](https://www.youtube.com/watch?v=ZVug65gW-fc)
 
 Image sources:
 
