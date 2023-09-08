@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import SuperTopic from '../components/SuperTopic'
+import SuperTopicPlaceholder from '../components/SuperTopicPlaceholder'
 
 const Topics = (props) => {
   //setting the topics from the backend
@@ -50,6 +51,11 @@ const Topics = (props) => {
         loading={loading}
       />
       <SuperTopic superTopic={'Maariv'} array={maarivArray} loading={loading} />
+      <br />
+      <br />
+      <SuperTopicPlaceholder superTopic={'Shabbat'} />
+      <SuperTopicPlaceholder superTopic={'Festivals'} />
+      <SuperTopicPlaceholder superTopic={'Berachot'} />
     </div>
   )
 }

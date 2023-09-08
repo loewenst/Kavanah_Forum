@@ -243,15 +243,14 @@ const TopicPage = (props) => {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            justifyContent: 'end'
+            justifyContent: 'center'
           }}
         >
           <CardTitle
-            tag="h5"
+            tag="h4"
             style={{
               fontFamily: "'Inter', sans-serif",
-              color: 'grey',
-              fontSize: '30px'
+              color: 'grey'
             }}
           >
             {topicName}
@@ -282,7 +281,7 @@ const TopicPage = (props) => {
                   color: 'grey',
                   backgroundColor: 'transparent',
                   border: 'grey solid 4px',
-                  margin: '0 12px 15px 12px'
+                  margin: '0 12px 10px 12px'
                 }}
               >
                 ADD POST
@@ -297,14 +296,13 @@ const TopicPage = (props) => {
                   color: 'grey',
                   backgroundColor: 'transparent',
                   border: 'grey solid 4px',
-                  margin: '0 12px 15px 12px'
+                  margin: '0 12px 10px 12px'
                 }}
               >
                 ADD QUESTION
               </Button>
             )}
           </div>
-          <br />
         </CardImgOverlay>
       </Card>
       <br />
