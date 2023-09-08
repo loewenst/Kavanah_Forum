@@ -31,11 +31,9 @@ const CommentForm = (props) => {
       post: props.postId,
       content: formData.content
     }
-    console.log(obj)
     const token = localStorage.getItem('access_token')
     await axiosInstance(token).post('postcomment/', obj)
     props.getComments()
-    console.log(contentRef)
     contentRef.current.value = ''
     setFormBlank(true)
   }

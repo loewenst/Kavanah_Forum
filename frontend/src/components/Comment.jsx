@@ -34,7 +34,6 @@ const Comment = (props) => {
       post: props.postId,
       content: formData.content
     }
-    console.log(obj)
     const token = localStorage.getItem('access_token')
     await axiosInstance(token).put(`modifycomment/${props.comment.id}`, obj)
     props.getComments()

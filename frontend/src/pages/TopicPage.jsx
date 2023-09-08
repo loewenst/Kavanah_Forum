@@ -114,7 +114,6 @@ const TopicPage = (props) => {
           }
         }
         let newArray = Object.keys(emotionObj)
-        console.log(newArray)
         newArray.sort((a, b) => emotionObj[b] - emotionObj[a])
         return newArray
       }

@@ -34,7 +34,6 @@ const Reply = (props) => {
       question: props.questionId,
       content: formData.content
     }
-    console.log(obj)
     const token = localStorage.getItem('access_token')
     await axiosInstance(token).put(`modifyreply/${props.reply.id}`, obj)
     props.getReplies()

@@ -30,7 +30,6 @@ const PostPageHeading = (props) => {
   }
 
   const emotions = (post) => {
-    console.log(post)
     if (post.third_emotion)
       return `${post.main_emotion}, ${post.second_emotion}, ${post.third_emotion}`
     if (post.second_emotion)

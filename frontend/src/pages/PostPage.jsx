@@ -88,7 +88,6 @@ const PostPage = (props) => {
       elaboration: formData.elaboration,
       sources: formData.sources
     }
-    console.log(obj)
     const token = localStorage.getItem('access_token')
     await axiosInstance(token).put(`modifypost/${postId}`, obj)
     await getPostById()
