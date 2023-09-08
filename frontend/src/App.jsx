@@ -23,13 +23,11 @@ function App() {
   const getUserData = async (token) => {
     const axiosBase = axiosInstance(token)
     let response = await axiosBase.get('user_info/')
-    console.log(response)
     setUser(response)
   }
 
   const djangoLogin = async (token) => {
     await axios
-      // https://kavanahforum-e2c5663ae901.herokuapp.com/api/
       .post(
         'https://kavanahforum-e2c5663ae901.herokuapp.com/auth/convert-token',
         {
@@ -46,12 +44,10 @@ function App() {
         console.log('Hit Django!')
         getUserData(res.data.access_token)
       })
-    // .then(
   }
 
   const onSuccess = async (res) => {
     console.log('LOGIN SUCCESSFUL!')
-    console.log(res)
     await djangoLogin(res.accessToken)
   }
 
@@ -77,7 +73,11 @@ function App() {
           <Route
             path="/"
             element={
-              <Home onSuccess={onSuccess} onLogoutSuccess={onLogoutSuccess} />
+              <Home
+                onSuccess={onSuccess}
+                onLogoutSuccess={onLogoutSuccess}
+                user={user}
+              />
             }
           />
           <Route path="about" element={<About />} />

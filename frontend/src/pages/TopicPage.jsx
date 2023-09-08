@@ -34,6 +34,7 @@ const TopicPage = (props) => {
   const [topicName, setTopicName] = useState('')
   const [superTopic, setSuperTopic] = useState('')
   const [subTopics, setSubTopics] = useState([])
+  const [loading, setLoading] = useState(true)
   const [topThreeEmotions, setTopThreeEmotions] = useState([])
   const [otherEmotions, setOtherEmotions] = useState('')
   const [content, setContent] = useState('posts')
@@ -41,6 +42,8 @@ const TopicPage = (props) => {
   const [questionModal, setQuestionModal] = useState(false)
   const initialFormData = {
     main_emotion: '',
+    second_emotion: '',
+    third_emotion: '',
     tldr: '',
     elaboration: '',
     sources: ''
@@ -55,18 +58,13 @@ const TopicPage = (props) => {
   )
 
   //State-Setting Functions
-  const subTopicArray = []
   const getSubTopics = async () => {
     const token = localStorage.getItem('access_token')
-    const response = await axiosInstance(token).get('topics/')
-    console.log(topicName, response.data)
-    response.data.forEach((obj) => {
-      if (obj.superTopic === topicName) {
-        subTopicArray.push(obj)
-      }
-    })
-    console.log(subTopicArray)
-    setSubTopics(subTopicArray)
+    const response = await axiosInstance(token).get(
+      `subtopics/?supertopic=${topicName}`
+    )
+    setSubTopics(response.data)
+    setLoading(false)
   }
 
   const getTopicData = async () => {
@@ -102,7 +100,7 @@ const TopicPage = (props) => {
   }
 
   const getEmotions = () => {
-    if (posts.length != 0) {
+    if (posts.length !== 0) {
       posts.forEach((post) => {
         emotionsArray.push(post.main_emotion)
       })
@@ -116,11 +114,11 @@ const TopicPage = (props) => {
           }
         }
         let newArray = Object.keys(emotionObj)
+        console.log(newArray)
         newArray.sort((a, b) => emotionObj[b] - emotionObj[a])
         return newArray
       }
       emotionsArray = emotionCounter(emotionsArray)
-      console.log(emotionsArray)
       if (emotionsArray.length > 3) {
         setTopThreeEmotions(
           `${emotionsArray[0]}, ${emotionsArray[1]}, ${emotionsArray[2]}`
@@ -164,6 +162,8 @@ const TopicPage = (props) => {
       user: props.user.data.pk,
       topic: parseInt(topicId),
       main_emotion: formData.main_emotion,
+      second_emotion: formData.second_emotion,
+      third_emotion: formData.third_emotion,
       tldr: formData.tldr,
       elaboration: formData.elaboration,
       sources: formData.sources
@@ -204,13 +204,17 @@ const TopicPage = (props) => {
     getTopicData()
   }, [topicId])
   useEffect(() => {
-    getEmotions()
     getSubTopics()
   }, [superTopic])
   useEffect(() => {
     getPosts()
     getQuestions()
   }, [topicName])
+  useEffect(() => {
+    setTopThreeEmotions([])
+    setOtherEmotions('')
+    getEmotions()
+  }, [posts])
   //
 
   return (
@@ -270,32 +274,38 @@ const TopicPage = (props) => {
             </CardText>
           )}
           <br />
-          {props.user && (
-            <Button
-              onClick={toggleModal}
-              style={{
-                fontFamily: "'Inter', sans-serif",
-                color: 'grey',
-                backgroundColor: 'transparent',
-                border: 'grey solid 4px'
-              }}
-            >
-              ADD POST
-            </Button>
-          )}
-          {props.user && (
-            <Button
-              onClick={toggleQuestionModal}
-              style={{
-                fontFamily: "'Inter', sans-serif",
-                color: 'grey',
-                backgroundColor: 'transparent',
-                border: 'grey solid 4px'
-              }}
-            >
-              ADD QUESTION
-            </Button>
-          )}
+          <div className="banner-buttons">
+            {props.user && (
+              <Button
+                size="sm"
+                onClick={toggleModal}
+                style={{
+                  fontFamily: "'Inter', sans-serif",
+                  color: 'grey',
+                  backgroundColor: 'transparent',
+                  border: 'grey solid 4px',
+                  margin: '0 12px 15px 12px'
+                }}
+              >
+                ADD POST
+              </Button>
+            )}
+            {props.user && (
+              <Button
+                size="sm"
+                onClick={toggleQuestionModal}
+                style={{
+                  fontFamily: "'Inter', sans-serif",
+                  color: 'grey',
+                  backgroundColor: 'transparent',
+                  border: 'grey solid 4px',
+                  margin: '0 12px 15px 12px'
+                }}
+              >
+                ADD QUESTION
+              </Button>
+            )}
+          </div>
           <br />
         </CardImgOverlay>
       </Card>
@@ -317,7 +327,11 @@ const TopicPage = (props) => {
             category, you're in the right place. Otherwise, use the links below
             to get to the specific prayer you're looking for.
           </p>
-          <SuperTopic array={subTopics} superTopic={topicName} />
+          <SuperTopic
+            array={subTopics}
+            superTopic={topicName}
+            loading={loading}
+          />
         </div>
       )}
       <br />
@@ -356,6 +370,13 @@ const TopicPage = (props) => {
             <PostCard post={post} />
           </Link>
         ))}
+      {content === 'posts' && posts.length === 0 && (
+        <div>
+          <br />
+          <p className="blank">No Posts Yet!</p>
+          <br />
+        </div>
+      )}
       {content === 'questions' &&
         questions.map((question) => (
           <Link
@@ -366,7 +387,15 @@ const TopicPage = (props) => {
             <QuestionCard question={question} />
           </Link>
         ))}
-
+      {content === 'questions' && questions.length === 0 && (
+        <div>
+          <br />
+          <p className="blank">No Questions Yet!</p>
+          <br />
+        </div>
+      )}
+      <br />
+      <br />
       {/* Modal Forms for Posts and Questions */}
       <Modal isOpen={modal} toggle={toggleModal}>
         <ModalHeader toggle={toggleModal}>

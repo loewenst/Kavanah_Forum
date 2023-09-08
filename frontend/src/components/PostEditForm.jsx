@@ -10,7 +10,6 @@ const PostEditForm = (props) => {
 
   const getSecondEmotionList = (firstEmotion) => {
     let workingArray = Emotions.filter((emotion) => emotion !== firstEmotion)
-    console.log(workingArray)
     setSecondEmotionList(workingArray)
   }
 
@@ -18,7 +17,6 @@ const PostEditForm = (props) => {
     let workingArray = secondEmotionList.filter(
       (emotion) => emotion !== secondEmotion
     )
-    console.log(workingArray)
     setThirdEmotionList(workingArray)
   }
 
@@ -47,7 +45,7 @@ const PostEditForm = (props) => {
               id="main_emotion"
               name="main_emotion"
               type="select"
-              value={props.initialFormData.main_emotion}
+              // value={props.initialFormData.main_emotion}
               onChange={(e) => {
                 getSecondEmotionList(e.target.value)
                 props.handleChange(e)
@@ -66,6 +64,7 @@ const PostEditForm = (props) => {
               id="second_emotion"
               name="second_emotion"
               type="select"
+              // value={props.initialFormData.second_emotion}
               onChange={(e) => {
                 getThirdEmotionList(e.target.value)
                 props.handleChange(e)
@@ -85,6 +84,7 @@ const PostEditForm = (props) => {
               id="third_emotion"
               name="third_emotion"
               type="select"
+              // value={props.initialFormData.third_emotion}
               onChange={(e) => props.handleChange(e)}
             >
               {thirdEmotionList &&
@@ -113,6 +113,7 @@ const PostEditForm = (props) => {
             <Label for="sources">Sources</Label>
             <Input
               id="sources"
+              name="sources"
               type="text"
               value={props.initialFormData.sources}
               onChange={(e) => props.handleChange(e)}

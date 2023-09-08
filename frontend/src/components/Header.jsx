@@ -115,11 +115,7 @@ const Header = (props) => {
           }}
         >
           <NavbarBrand href="/">
-            <img
-              src="https://i.imgur.com/5Z26kqF.png"
-              alt=""
-              style={{ height: '60px' }}
-            />
+            <img src="/Book.svg" alt="" style={{ height: '60px' }} />
           </NavbarBrand>
 
           <NavLink

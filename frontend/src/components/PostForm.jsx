@@ -33,7 +33,6 @@ const PostForm = (props) => {
 
   const getSecondEmotionList = (firstEmotion) => {
     let workingArray = Emotions.filter((emotion) => emotion !== firstEmotion)
-    console.log(workingArray)
     setSecondEmotionList(workingArray)
   }
 
@@ -41,7 +40,6 @@ const PostForm = (props) => {
     let workingArray = secondEmotionList.filter(
       (emotion) => emotion !== secondEmotion
     )
-    console.log(workingArray)
     setThirdEmotionList(workingArray)
   }
 
@@ -133,6 +131,7 @@ const PostForm = (props) => {
             <Label for="sources">Sources</Label>
             <Input
               id="sources"
+              name="sources"
               type="text"
               onChange={(e) => props.handleChange(e)}
             ></Input>

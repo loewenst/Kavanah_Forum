@@ -13,7 +13,6 @@ const TestTopics = (props) => {
 
   const getTopics = async () => {
     const response = await axiosBase.get('topics/')
-    console.log(response.data)
     setTopics(response.data)
   }
 
@@ -26,15 +25,12 @@ const TestTopics = (props) => {
   }, [props.user])
 
   const getSuperTopicArray = (topic) => {
-    console.log(topics)
-    console.log(topic)
     let workingArray = []
     for (let i = 0; i < topics.length; i++) {
       if (topics[i].superTopic === topic) {
         workingArray.push(topics[i])
       }
     }
-    console.log(workingArray)
     return workingArray
   }
 

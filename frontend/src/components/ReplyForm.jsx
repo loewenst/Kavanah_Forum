@@ -3,16 +3,13 @@ import { useState } from 'react'
 import axiosInstance from './AxiosInstance'
 import { useRef } from 'react'
 
-const CommentForm = (props) => {
+const ReplyForm = (props) => {
   const [formBlank, setFormBlank] = useState(true)
   const contentRef = useRef(null)
   const initialFormData = {
     content: ''
   }
   const [formData, setFormData] = useState(initialFormData)
-  // useState for initial form data
-  //handleChange and handleSubmit
-  //Cancel and Submit buttons hidden until comment has a length
 
   const handleChange = (e) => {
     setFormData({
@@ -28,14 +25,12 @@ const CommentForm = (props) => {
     e.preventDefault()
     const obj = {
       user: props.user.data.pk,
-      post: props.postId,
+      question: props.questionId,
       content: formData.content
     }
-    console.log(obj)
     const token = localStorage.getItem('access_token')
-    await axiosInstance(token).post('postcomment/', obj)
-    props.getComments()
-    console.log(contentRef)
+    await axiosInstance(token).post('postreply/', obj)
+    props.getReplies()
     contentRef.current.value = ''
     setFormBlank(true)
   }
@@ -45,7 +40,7 @@ const CommentForm = (props) => {
       <Input
         id="content"
         name="content"
-        placeholder="Add a comment..."
+        placeholder="Add a reply..."
         type="text"
         onChange={(e) => handleChange(e)}
         innerRef={contentRef}
@@ -78,4 +73,4 @@ const CommentForm = (props) => {
   )
 }
 
-export default CommentForm
+export default ReplyForm

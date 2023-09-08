@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import User, Topic, Post, Comment, Question
+from .models import User, Topic, Post, Comment, Question, Reply
 
 
 
@@ -34,13 +34,22 @@ class CreatePostSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Post
-        fields = ('user', 'topic', 'main_emotion', 'tldr', 'elaboration', 'sources')
+        fields = ('user', 'topic', 'main_emotion', 'second_emotion', 'third_emotion', 'tldr', 'elaboration', 'sources')
 
 class CommentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Comment
         fields = "__all__"
+        depth = 2
+
+class CreateCommentSerializer(serializers.ModelSerializer):
+    user = UserSerializer
+    post = PostSerializer
+
+    class Meta:
+        model = Comment
+        fields = ('user', 'post', 'content')
 
 class QuestionSerializer(serializers.ModelSerializer):
 
@@ -56,3 +65,18 @@ class CreateQuestionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Question
         fields = ('user', 'topic', 'question_text', 'long_question_text')
+
+class ReplySerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Reply
+        fields = "__all__"
+        depth = 2
+
+class CreateReplySerializer(serializers.ModelSerializer):
+    user = UserSerializer
+    question = QuestionSerializer
+
+    class Meta:
+        model = Reply
+        fields = ('user', 'question', 'content')

@@ -1,19 +1,25 @@
 import { useParams, useNavigate } from 'react-router-dom'
-import PostCard from '../components/PostCard'
 import { useEffect, useState } from 'react'
 import axiosInstance from '../components/AxiosInstance'
+import axios from 'axios'
 import PostEditForm from '../components/PostEditForm'
 import { Button, Modal, ModalBody, ModalHeader, ModalFooter } from 'reactstrap'
+import Comment from '../components/Comment'
+import PostPageHeading from '../components/PostPageHeading'
+import CommentForm from '../components/CommentForm'
 
 const PostPage = (props) => {
   const navigate = useNavigate()
   const { postId, topicId } = useParams()
   const [post, setPost] = useState(null)
+  const [comments, setComments] = useState([])
   const axiosBase = axiosInstance(localStorage.getItem('access_token'))
   const [modal, setModal] = useState(false)
 
   const initialFormData = {
     main_emotion: '',
+    second_emotion: '',
+    third_emotion: '',
     tldr: '',
     elaboration: '',
     sources: ''
@@ -23,11 +29,12 @@ const PostPage = (props) => {
 
   useEffect(() => {
     if (post) {
-      console.log(post)
       setFormData({
         user: post.user.id,
         topic: post.topic.id,
         main_emotion: post.main_emotion,
+        second_emotion: post.second_emotion,
+        third_emotion: post.third_emotion,
         tldr: post.tldr,
         elaboration: post.elaboration,
         sources: post.sources
@@ -49,10 +56,17 @@ const PostPage = (props) => {
   }
 
   const getPostById = async () => {
-    console.log(postId)
     const response = await axiosBase.get(`posts/${postId}`)
-    console.log(response)
     setPost(response.data)
+  }
+
+  const getComments = async () => {
+    if (post) {
+      const response = await axios.get(
+        `https://kavanahforum-e2c5663ae901.herokuapp.com/api/comments/?post=${post.id}`
+      )
+      setComments(response.data)
+    }
   }
 
   const handleChange = (e) => {
@@ -66,8 +80,10 @@ const PostPage = (props) => {
     e.preventDefault()
     const obj = {
       user: formData.user,
-      topic: formData,
+      topic: formData.topic,
       main_emotion: formData.main_emotion,
+      second_emotion: formData.second_emotion,
+      third_emotion: formData.third_emotion,
       tldr: formData.tldr,
       elaboration: formData.elaboration,
       sources: formData.sources
@@ -90,6 +106,10 @@ const PostPage = (props) => {
   }, [postId])
 
   useEffect(() => {
+    getComments()
+  }, [post])
+
+  useEffect(() => {
     checkUser()
   }, [props.user])
 
@@ -98,25 +118,54 @@ const PostPage = (props) => {
   return (
     <div
       style={{
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center'
+        marginLeft: '20px',
+        marginRight: '20px'
       }}
     >
-      {post && <PostCard post={post} />}
+      {post && (
+        <PostPageHeading
+          post={post}
+          toggleModal={toggleModal}
+          handleDelete={handleDelete}
+          user={props.user}
+        />
+      )}
+
       <br />
-      {checkUser() && (
-        <Button style={{ width: '20vw' }} onClick={toggleModal}>
-          Edit
-        </Button>
+      <br />
+      <h3>Comments</h3>
+      {!props.user && (
+        <p style={{ fontSize: '.8em', fontStyle: 'italic' }}>
+          Log In To Comment
+        </p>
       )}
       <br />
-      {checkUser() && (
-        <Button onClick={handleDelete} style={{ width: '20vw' }}>
-          Delete
-        </Button>
+      {props.user && (
+        <CommentForm
+          user={props.user}
+          getComments={getComments}
+          postId={postId}
+        />
       )}
+      <br />
+      {comments &&
+        comments.map((comment) => (
+          <div key={comment.id}>
+            <Comment
+              comment={comment}
+              user={props.user}
+              postId={postId}
+              getComments={getComments}
+            />
+          </div>
+        ))}
+      {comments && comments.length === 0 && (
+        <div>
+          <p className="blank">No Comments Yet!</p>
+          <br />
+        </div>
+      )}
+
       {post && (
         <Modal isOpen={modal} toggle={toggleModal}>
           <ModalHeader toggle={toggleModal}>

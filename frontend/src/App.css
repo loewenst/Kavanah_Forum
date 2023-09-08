@@ -31,5 +31,106 @@
   padding-left: 10px;
   padding-right: 10px;
   display: none;
-  color:#086320
+  color:#086320;
+}
+
+.skeleton {
+  opacity: .7;
+  animation: skeleton-loading 1s linear infinite alternate;
+}
+
+.skeleton-homepage {
+  opacity: .7;
+  animation: skeleton-loading-homepage 1s linear infinite alternate;
+}
+
+.skeleton-heading {
+  width: 40%;
+  height: 1.25rem;
+  border-radius: .125rem;
+}
+
+.skeleton-text-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.skeleton-text {
+  width: 90%;
+  height: 1.25rem;
+  margin-bottom: .25rem;
+  border-radius: .125rem;
+}
+
+.skeleton-text:last-child {
+  margin-bottom: 0;
+  width: 70%;
+}
+
+.skeleton-text-small {
+  width: 30%;
+  height: .9rem;
+  border-radius: .125rem;
+}
+
+@keyframes skeleton-loading-homepage {
+  0% {
+    background-color: hsl(0, 0%, 58%);
+  }
+
+  100% {
+    background-color: hsl(0, 0%, 72%);
+  }
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-color: hsl(136, 13%, 40%);
+  }
+
+  100% {
+    background-color: hsl(136, 13%, 50%);
+  }
+}
+
+.comment {
+  width: 90vw;
+  display: flex;
+  justify-content: space-between;
+}
+
+.editButtons {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.postHeadingCard{
+  text-align: left;
+  margin-left: -10px;
+  padding: 30px;
+  background-color: aquamarine;
+}
+
+.blank {
+  text-align: center;
+  font-size: 1.2em;
+  margin-top: 20px;
+}
+
+.banner-buttons {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.small-screen-postcard-bottom {
+  display: flex;
+  justify-content: space-around;
+  margin: 15px 0 -10px 0;
+  font-size: .8em;
+  color: white
 }

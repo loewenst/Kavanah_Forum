@@ -6,7 +6,6 @@ import * as AiIcons from 'react-icons/ai'
 
 const SuperTopic = (props) => {
   const topic = props.superTopic
-  console.log('SuperTopic Array: ', props.array)
 
   //Controls for toggling subtopics
   const [isOpen, setIsOpen] = useState(false)
@@ -29,6 +28,22 @@ const SuperTopic = (props) => {
     } else {
       return 'auto'
     }
+  }
+  const checkSizeTextSize = () => {
+    if (isSmallScreen) {
+      return '.75em'
+    } else {
+      return '1em'
+    }
+  }
+
+  //Loading style
+  const loadingStyle = {
+    width: `${checkSizeButtonsWidth()}`,
+    height: `${checkSizeButtonsHeight()}`,
+    margin: '2px',
+    border: 'none',
+    minHeight: '35px'
   }
 
   return (
@@ -57,20 +72,29 @@ const SuperTopic = (props) => {
             maxWidth: '90vw'
           }}
         >
-          {props.array.map((topic) => (
-            <Link key={topic.id} to={`/t/${topic.id}`}>
-              <Button
-                style={{
-                  backgroundColor: '#086320',
-                  width: `${checkSizeButtonsWidth()}`,
-                  height: `${checkSizeButtonsHeight()}`,
-                  margin: '2px'
-                }}
-              >
-                {topic.title}
-              </Button>
-            </Link>
-          ))}
+          {props.loading && (
+            <div>
+              <Button style={loadingStyle} className="skeleton"></Button>
+              <Button style={loadingStyle} className="skeleton"></Button>
+              <Button style={loadingStyle} className="skeleton"></Button>
+            </div>
+          )}
+          {!props.loading &&
+            props.array.map((topic) => (
+              <Link key={topic.id} to={`/t/${topic.id}`}>
+                <Button
+                  style={{
+                    backgroundColor: '#086320',
+                    width: `${checkSizeButtonsWidth()}`,
+                    height: `${checkSizeButtonsHeight()}`,
+                    margin: '2px',
+                    fontSize: `${checkSizeTextSize()}`
+                  }}
+                >
+                  {topic.title}
+                </Button>
+              </Link>
+            ))}
         </CardBody>
       </Collapse>
     </Card>
