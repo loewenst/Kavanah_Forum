@@ -10,7 +10,6 @@ import TopicPage from './pages/TopicPage'
 import PostPage from './pages/PostPage'
 import QuestionPage from './pages/QuestionPage'
 import axios from 'axios'
-import { useMediaQuery } from 'react-responsive'
 import axiosInstance from './components/AxiosInstance'
 
 function App() {

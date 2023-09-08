@@ -1,4 +1,4 @@
-import { Form, Row, Col, FormGroup, Label, Input, Button } from 'reactstrap'
+import { Form, Row, FormGroup, Label, Input } from 'reactstrap'
 import * as FcIcons from 'react-icons/fc'
 
 const QuestionEditForm = (props) => {

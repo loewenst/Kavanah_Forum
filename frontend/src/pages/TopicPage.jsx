@@ -214,7 +214,6 @@ const TopicPage = (props) => {
     setOtherEmotions('')
     getEmotions()
   }, [posts])
-  //
 
   return (
     <div>

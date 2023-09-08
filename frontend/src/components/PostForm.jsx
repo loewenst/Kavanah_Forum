@@ -1,33 +1,9 @@
-import axios from 'axios'
 import { useState } from 'react'
 import { Form, Row, Col, FormGroup, Label, Input, Button } from 'reactstrap'
 import Emotions from './Emotions'
 import * as FcIcons from 'react-icons/fc'
 
-// need imports
-//post object needs:
-
-//topic id
-//user id
-//tl;dr
-//emotion
-//opt: elaboration
-//opt: sources
-//opt: other emotions
-//opt: related topics
-
-//form: fields:
-//topic (for now)
-//emotion
-//one liner
-//elaboration
-//
 const PostForm = (props) => {
-  // const initialState = {
-  //   pk: 0,
-  //   user: userId
-  // }
-
   const [secondEmotionList, setSecondEmotionList] = useState([])
   const [thirdEmotionList, setThirdEmotionList] = useState([])
 

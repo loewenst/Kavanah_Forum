@@ -4,8 +4,6 @@ import {
   AccordionHeader,
   AccordionItem
 } from 'reactstrap'
-import { useState } from 'react'
-import * as AiIcons from 'react-icons/ai'
 
 const About = () => {
   return (

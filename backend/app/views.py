@@ -5,7 +5,6 @@ from rest_framework import status, permissions
 from rest_framework.exceptions import PermissionDenied
 from .models import Topic, Post, Comment, Question
 from .serializers import *
-# Create your views here.
 
 @api_view(['GET'])
 @permission_classes([permissions.IsAuthenticated])
@@ -29,7 +28,6 @@ def topics(request):
 def subtopics(request):
     if request.method == 'GET':
         superTopic = request.GET.get('supertopic')
-        print(superTopic)
         data = Topic.objects.filter(superTopic=superTopic)
 
         serializer = TopicSerializer(data, context={'request': request}, many=True)
@@ -103,7 +101,6 @@ def createpost(request):
 @permission_classes([permissions.IsAuthenticated])
 def createquestion(request):
     if request.method == 'POST':
-        print('data arrived')
         serializer = CreateQuestionSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -151,9 +148,6 @@ def post_modify(request, pk):
     if request.method == 'PUT':
         serializer = CreatePostSerializer(post, data=request.data,context={'request': request})
         if serializer.is_valid():
-            print(serializer.validated_data['user'])
-            print(request.user)
-            print(serializer.validated_data['user'] == request.user)
             if serializer.validated_data['user'] != request.user:
                 raise PermissionDenied
             else:
@@ -165,9 +159,6 @@ def post_modify(request, pk):
         if post.user != request.user:
             raise PermissionDenied
         else:
-            print(post.user)
-            print(request.user)
-            print(post.user == request.user)
             post.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -183,9 +174,6 @@ def question_modify(request, pk):
     if request.method == 'PUT':
         serializer = CreateQuestionSerializer(question, data=request.data,context={'request': request})
         if serializer.is_valid():
-            print(serializer.validated_data['user'])
-            print(request.user)
-            print(serializer.validated_data['user'] == request.user)
             if serializer.validated_data['user'] != request.user:
                 raise PermissionDenied
             else:
@@ -234,9 +222,6 @@ def comment_modify(request, pk):
     if request.method == 'PUT':
         serializer = CreateCommentSerializer(comment, data=request.data, context={'request': request})
         if serializer.is_valid():
-            print(serializer.validated_data['user'])
-            print(request.user)
-            print(serializer.validated_data['user'] == request.user)
             if serializer.validated_data['user'] != request.user:
                 raise PermissionDenied
             else:
@@ -282,9 +267,6 @@ def reply_modify(request, pk):
     if request.method == 'PUT':
         serializer = CreateReplySerializer(reply, data=request.data, context={'request': request})
         if serializer.is_valid():
-            print(serializer.validated_data['user'])
-            print(request.user)
-            print(serializer.validated_data['user'] == request.user)
             if serializer.validated_data['user'] != request.user:
                 raise PermissionDenied
             else:
@@ -296,6 +278,7 @@ def reply_modify(request, pk):
         reply.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+# Potentially relevant for future features:
 
 # @api_view(['GET'])
 # @permission_classes([permissions.IsAuthenticated])

@@ -1,7 +1,5 @@
 import { Card, CardBody, CardText } from 'reactstrap'
-import convertDate from './ConvertDate'
 
-//date formating
 const LatestSkeletonCard = (props) => {
   return (
     <div style={{ marginTop: '2vh' }}>

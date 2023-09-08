@@ -1,7 +1,6 @@
 import { Card, CardBody, Row, Col, CardText } from 'reactstrap'
 import convertDate from './ConvertDate'
 
-//date formating
 const LatestPostCard = (props) => {
   return (
     <div style={{ marginTop: '2vh' }}>

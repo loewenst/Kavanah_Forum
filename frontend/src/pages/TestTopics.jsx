@@ -1,8 +1,4 @@
-import { Link } from 'react-router-dom'
 import { useEffect, useState } from 'react'
-import { Button, Card, CardHeader, CardBody, Collapse } from 'reactstrap'
-import axios from 'axios'
-import * as AiIcons from 'react-icons/ai'
 import SuperTopic from '../components/SuperTopic'
 import axiosInstance from '../components/AxiosInstance'
 

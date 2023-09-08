@@ -112,8 +112,6 @@ const PostPage = (props) => {
     checkUser()
   }, [props.user])
 
-  //functions for editing
-
   return (
     <div
       style={{

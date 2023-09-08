@@ -1,4 +1,3 @@
-import axios from 'axios'
 import { useState } from 'react'
 import { Form, Row, Col, FormGroup, Label, Input, Button } from 'reactstrap'
 import Emotions from './Emotions'
@@ -45,6 +44,7 @@ const PostEditForm = (props) => {
               id="main_emotion"
               name="main_emotion"
               type="select"
+              // **need to add back in the below after debugging why two and three don't autofill**
               // value={props.initialFormData.main_emotion}
               onChange={(e) => {
                 getSecondEmotionList(e.target.value)
@@ -64,6 +64,7 @@ const PostEditForm = (props) => {
               id="second_emotion"
               name="second_emotion"
               type="select"
+              // **need to add back in the below after debugging why it doesn't autofill**
               // value={props.initialFormData.second_emotion}
               onChange={(e) => {
                 getThirdEmotionList(e.target.value)
@@ -84,6 +85,7 @@ const PostEditForm = (props) => {
               id="third_emotion"
               name="third_emotion"
               type="select"
+              // **need to add back in the below after debugging why it doesn't autofill**
               // value={props.initialFormData.third_emotion}
               onChange={(e) => props.handleChange(e)}
             >

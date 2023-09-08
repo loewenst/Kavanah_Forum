@@ -37,7 +37,7 @@ const SuperTopic = (props) => {
     }
   }
 
-  //Loading style
+  //Style for Loading Skeleton
   const loadingStyle = {
     width: `${checkSizeButtonsWidth()}`,
     height: `${checkSizeButtonsHeight()}`,

@@ -10,9 +10,6 @@ const CommentForm = (props) => {
     content: ''
   }
   const [formData, setFormData] = useState(initialFormData)
-  // useState for initial form data
-  //handleChange and handleSubmit
-  //Cancel and Submit buttons hidden until comment has a length
 
   const handleChange = (e) => {
     setFormData({
