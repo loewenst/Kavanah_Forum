@@ -10,7 +10,6 @@ The live site can be accessed [here](https://kavanah-forum-frontend.vercel.app/)
 - [What is Kavanah?](#what-is-kavanah)
 - [Usage](#usage)
 - [Credits](#usage)
-- [Creator Info](#creator-info)
 - [Additional Info](#additional-info)
 
 ## What is Kavanah?
